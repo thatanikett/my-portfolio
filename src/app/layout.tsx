@@ -1,3 +1,4 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
@@ -27,7 +28,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body 
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        style={{ margin: 0, padding: 0 }}
       >
         <ThemeProvider
           attribute="data-theme"
@@ -35,9 +35,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div id="app-container" style={{ position: 'relative', minHeight: '100vh' }}>
-            {children}
-          </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>
