@@ -28,6 +28,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body 
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{
+          // CRITICAL: Ensure body doesn't block WebGL canvas
+          background: 'transparent',
+          // Prevent stacking context issues
+          position: 'relative',
+          // Allow WebGL to render
+          isolation: 'auto'
+        }}
       >
         <ThemeProvider
           attribute="data-theme"
@@ -35,6 +43,20 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          {/* Add a fallback background div for non-WebGL content */}
+          <div 
+            className="fallback-background"
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              background: 'var(--background)',
+              zIndex: -2,
+              pointerEvents: 'none'
+            }}
+          />
           {children}
         </ThemeProvider>
       </body>

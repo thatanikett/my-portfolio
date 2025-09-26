@@ -1220,8 +1220,13 @@ export default function LiquidEther({
   return (
     <div
       ref={mountRef}
-      className={`w-full h-full relative overflow-hidden ${className || ''}`}
-      style={style}
+    className={`w-full h-full relative overflow-hidden ${className || ''}`}
+    style={{
+      ...style,
+      // CRITICAL: Enable pointer events for mouse interaction
+      pointerEvents: 'auto',
+      touchAction: 'manipulation'
+    }}
     />
   );
 }
