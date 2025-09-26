@@ -81,7 +81,6 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 };
 
 
-// Update the NavBody component
 export const NavBody = ({ children, className, visible }: NavBodyProps) => {
   return (
     <motion.div
@@ -90,19 +89,19 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         boxShadow: visible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
-        width: visible ? "60%" : "100%",  // Changed from 40% to 60%
-        y: visible ? 0 : 0,  // Remove vertical movement
+        width: visible ? "70%" : "95%",  // Better scaling
+        y: visible ? 0 : 0,
       }}
       transition={{
         type: "spring",
         stiffness: 200,
-        damping: 30,  // Reduced damping for smoother animation
+        damping: 30,
       }}
       style={{
-        minWidth: visible ? "600px" : "800px",  // Adjust min-width based on state
+        minWidth: visible ? "800px" : "1000px",  // Larger minimum widths
       }}
       className={cn(
-        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between rounded-full bg-transparent px-4 py-2 lg:flex dark:bg-transparent",
+        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between rounded-full bg-transparent px-8 py-4 lg:flex dark:bg-transparent",  // Increased padding
         visible && "bg-white/80 dark:bg-neutral-950/80",
         className,
       )}
@@ -120,7 +119,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
     <motion.div
       onMouseLeave={() => setHovered(null)}
       className={cn(
-        "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2",
+        "flex flex-row items-center justify-center space-x-8 text-base font-medium text-zinc-600 transition duration-200 hover:text-zinc-800",  // Increased spacing and font size
         className,
       )}
     >
@@ -128,7 +127,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
         <a
           onMouseEnter={() => setHovered(idx)}
           onClick={onItemClick}
-          className="relative px-4 py-2 text-neutral-600 dark:text-neutral-300"
+          className="relative px-6 py-3 text-neutral-600 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors"  // Better padding
           key={`link-${idx}`}
           href={item.link}
         >
@@ -138,12 +137,13 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
               className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
             />
           )}
-          <span className="relative z-20">{item.name}</span>
+          <span className="relative z-20 text-base font-medium">{item.name}</span>
         </a>
       ))}
     </motion.div>
   );
 };
+
 
 export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
   return (
@@ -153,11 +153,11 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
         boxShadow: visible
           ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
           : "none",
-        width: visible ? "90%" : "100%",
-        paddingRight: visible ? "12px" : "0px",
-        paddingLeft: visible ? "12px" : "0px",
-        borderRadius: visible ? "4px" : "2rem",
-        y: visible ? 20 : 0,
+        width: visible ? "92%" : "98%",  // Better mobile scaling
+        paddingRight: visible ? "16px" : "0px",
+        paddingLeft: visible ? "16px" : "0px",
+        borderRadius: visible ? "8px" : "2rem",
+        y: visible ? 0 : 0,
       }}
       transition={{
         type: "spring",
@@ -165,7 +165,7 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
         damping: 50,
       }}
       className={cn(
-        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between bg-transparent px-0 py-2 lg:hidden",
+        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between bg-transparent px-0 py-4 lg:hidden",  // Increased padding
         visible && "bg-white/80 dark:bg-neutral-950/80",
         className,
       )}
