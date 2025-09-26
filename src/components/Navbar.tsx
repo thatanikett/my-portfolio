@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 
 interface NavItem {
   name: string;
@@ -35,18 +35,42 @@ export default function Navbar() {
     }, 350);
   };
 
-  // Mobile sheet animation
-  const sheet = {
-    closed: { opacity: 0, height: 0, transition: { duration: 0.3, ease: "easeInOut" } },
-    open: { opacity: 1, height: "auto", transition: { duration: 0.4, ease: "easeOut" } },
+  // Mobile sheet animation - FIXED TypeScript types
+  const sheet: Variants = {
+    closed: { 
+      opacity: 0, 
+      height: 0, 
+      transition: { 
+        duration: 0.3, 
+        ease: "easeInOut" as const  // Fixed: use valid easing with const assertion
+      } 
+    },
+    open: { 
+      opacity: 1, 
+      height: "auto", 
+      transition: { 
+        duration: 0.4, 
+        ease: "easeOut" as const    // Fixed: use valid easing with const assertion
+      } 
+    },
   };
 
-  const item = {
-    closed: { opacity: 0, x: -16, transition: { duration: 0.2 } },
+  const item: Variants = {
+    closed: { 
+      opacity: 0, 
+      x: -16, 
+      transition: { 
+        duration: 0.2 
+      } 
+    },
     open: (i: number) => ({
       opacity: 1,
       x: 0,
-      transition: { delay: i * 0.08, duration: 0.25, ease: "easeOut" },
+      transition: { 
+        delay: i * 0.08, 
+        duration: 0.25, 
+        ease: "easeOut" as const    // Fixed: use valid easing with const assertion
+      },
     }),
   };
 
@@ -169,7 +193,7 @@ export default function Navbar() {
                 whitespace-nowrap
               "
             >
-              Let’s Talk
+              Let's Talk
             </a>
             <a
               href="/resume.pdf"
@@ -246,7 +270,7 @@ export default function Navbar() {
                       whileTap={{ scale: 0.98 }}
                       className="block text-center px-6 py-4 rounded-2xl text-lg font-semibold text-white/90 hover:text-white hover:bg-white/10 border border-white/20 transition"
                     >
-                      Let’s Talk
+                      Let's Talk
                     </motion.a>
                     <motion.a
                       href="/resume.pdf"
