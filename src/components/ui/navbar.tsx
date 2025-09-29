@@ -11,6 +11,7 @@ interface NavItem {
 const FloatingNavbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeItem, setActiveItem] = useState('Home');
+  const [isMobile, setIsMobile] = useState(false);
 
   const navItems: NavItem[] = [
     { name: 'Home', href: '/' },
@@ -25,113 +26,95 @@ const FloatingNavbar: React.FC = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
-  const navbarStyles: React.CSSProperties = {
+  const getNavbarStyles = (): React.CSSProperties => ({
     position: 'fixed',
-    top: '20px',
+    top: isMobile ? '12px' : '20px',
     left: '50%',
-    transform: 'translateX(-50%)',
+    transform: `translateX(-50%) scale(${isScrolled ? 0.98 : 1})`,
     zIndex: 9999,
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     opacity: isScrolled ? 0.95 : 1,
-    transform: `translateX(-50%) scale(${isScrolled ? 0.98 : 1})`,
-  };
+    maxWidth: isMobile ? 'calc(100vw - 24px)' : 'auto',
+    width: isMobile ? '100%' : 'auto',
+  });
 
-  const containerStyles: React.CSSProperties = {
+  const getContainerStyles = (): React.CSSProperties => ({
     background: 'rgba(0, 0, 0, 0.85)',
     backdropFilter: 'blur(20px)',
     WebkitBackdropFilter: 'blur(20px)',
     border: '1px solid rgba(75, 85, 99, 0.3)',
-    borderRadius: '50px',
-    padding: '8px',
+    borderRadius: isMobile ? '20px' : '50px',
+    padding: isMobile ? '6px 8px' : '8px',
     boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05)',
     display: 'flex',
     alignItems: 'center',
-    gap: '4px',
-    minHeight: '56px',
-  };
+    justifyContent: 'center',
+    gap: isMobile ? '2px' : '4px',
+    minHeight: isMobile ? '44px' : '56px',
+    width: '100%',
+    overflow: 'hidden',
+  });
 
-  const navLinkStyles: React.CSSProperties = {
+  const getNavLinkStyles = (): React.CSSProperties => ({
     position: 'relative',
-    padding: '10px 20px',
-    fontSize: '15px',
+    padding: isMobile ? '8px 10px' : '10px 20px',
+    fontSize: isMobile ? '13px' : '15px',
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: '25px',
+    borderRadius: isMobile ? '12px' : '25px',
     transition: 'all 0.2s ease-in-out',
     textDecoration: 'none',
     display: 'inline-block',
     cursor: 'pointer',
-  };
+    whiteSpace: 'nowrap',
+    textAlign: 'center',
+    flex: isMobile ? '1' : 'auto',
+    minWidth: isMobile ? '0' : 'auto',
+  });
 
-  const loginButtonStyles: React.CSSProperties = {
+  const getLoginButtonStyles = (): React.CSSProperties => ({
     background: 'linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%)',
     color: '#000000',
-    padding: '12px 24px',
-    fontSize: '15px',
+    padding: isMobile ? '8px 12px' : '12px 24px',
+    fontSize: isMobile ? '13px' : '15px',
     fontWeight: '600',
-    borderRadius: '25px',
+    borderRadius: isMobile ? '12px' : '25px',
     textDecoration: 'none',
     display: 'inline-block',
     cursor: 'pointer',
     transition: 'all 0.2s ease-in-out',
     boxShadow: '0 4px 15px rgba(255, 255, 255, 0.2)',
-    marginLeft: '8px',
+    marginLeft: isMobile ? '4px' : '8px',
     border: 'none',
-  };
+    whiteSpace: 'nowrap',
+    flexShrink: 0,
+  });
 
-  const separatorStyles: React.CSSProperties = {
+  const getSeparatorStyles = (): React.CSSProperties => ({
     width: '1px',
-    height: '24px',
+    height: isMobile ? '20px' : '24px',
     background: 'rgba(75, 85, 99, 0.5)',
-    margin: '0 8px',
-  };
-
-  // Mobile styles
-  const mobileContainerStyles: React.CSSProperties = {
-    ...containerStyles,
-    padding: '6px',
-    minHeight: '48px',
-  };
-
-  const mobileNavLinkStyles: React.CSSProperties = {
-    ...navLinkStyles,
-    padding: '8px 16px',
-    fontSize: '14px',
-  };
-
-  const mobileLoginButtonStyles: React.CSSProperties = {
-    ...loginButtonStyles,
-    padding: '10px 18px',
-    fontSize: '14px',
-    marginLeft: '4px',
-  };
+    margin: isMobile ? '0 4px' : '0 8px',
+    flexShrink: 0,
+  });
 
   return (
     <>
       <style jsx>{`
-        @media (max-width: 768px) {
-          .floating-navbar-container {
-            padding: 6px !important;
-            min-height: 48px !important;
-          }
-          .floating-navbar-link {
-            padding: 8px 16px !important;
-            font-size: 14px !important;
-          }
-          .floating-navbar-login {
-            padding: 10px 18px !important;
-            font-size: 14px !important;
-            margin-left: 4px !important;
-          }
-          .floating-navbar-separator {
-            margin: 0 4px !important;
-          }
-        }
-        
         .floating-navbar-link:hover {
           color: rgba(255, 255, 255, 1) !important;
           background: rgba(255, 255, 255, 0.1) !important;
@@ -148,37 +131,85 @@ const FloatingNavbar: React.FC = () => {
           color: rgba(255, 255, 255, 1) !important;
           background: rgba(255, 255, 255, 0.15) !important;
         }
+
+        .floating-navbar-content {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          width: 100% !important;
+          gap: ${isMobile ? '2px' : '4px'} !important;
+        }
+
+        @media (max-width: 480px) {
+          .floating-navbar-link {
+            font-size: 12px !important;
+            padding: 6px 8px !important;
+          }
+          
+          .floating-navbar-login {
+            font-size: 12px !important;
+            padding: 6px 10px !important;
+          }
+
+          .floating-navbar-separator {
+            margin: 0 2px !important;
+          }
+        }
+
+        @media (max-width: 375px) {
+          .floating-navbar-link {
+            font-size: 11px !important;
+            padding: 6px 6px !important;
+          }
+          
+          .floating-navbar-login {
+            font-size: 11px !important;
+            padding: 6px 8px !important;
+          }
+        }
+
+        /* Ensure text doesn't wrap on very small screens */
+        @media (max-width: 320px) {
+          .floating-navbar-link {
+            font-size: 10px !important;
+            padding: 5px 4px !important;
+          }
+          
+          .floating-navbar-login {
+            font-size: 10px !important;
+            padding: 5px 6px !important;
+          }
+        }
       `}</style>
       
-      <nav style={navbarStyles}>
-        <div 
-          className="floating-navbar-container"
-          style={window.innerWidth <= 768 ? mobileContainerStyles : containerStyles}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+      <nav style={getNavbarStyles()}>
+        <div style={getContainerStyles()}>
+          <div className="floating-navbar-content">
             {/* Navigation Links */}
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 className={`floating-navbar-link ${activeItem === item.name ? 'floating-navbar-active' : ''}`}
-                style={window.innerWidth <= 768 ? mobileNavLinkStyles : navLinkStyles}
+                style={getNavLinkStyles()}
                 onClick={() => setActiveItem(item.name)}
               >
                 {item.name}
               </Link>
             ))}
             
-            {/* Separator */}
-            <div className="floating-navbar-separator" style={separatorStyles}></div>
+            {/* Separator - Hide on very small screens */}
+            {!isMobile && (
+              <div className="floating-navbar-separator" style={getSeparatorStyles()}></div>
+            )}
             
             {/* Login Button */}
             <Link
-              href="resume.pdf"
+              href="/login"
               className="floating-navbar-login"
-              style={window.innerWidth <= 768 ? mobileLoginButtonStyles : loginButtonStyles}
+              style={getLoginButtonStyles()}
             >
-              Resume
+              Login
             </Link>
           </div>
         </div>
