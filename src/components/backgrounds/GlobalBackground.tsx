@@ -18,7 +18,7 @@ export default function SimpleLiquidBackground() {
     >
       <LiquidEither
         colors={['#5227FF', '#FF9FFC', '#B19EEF']}
-        mouseForce={20}
+        mouseForce={15}
         cursorSize={100}
         isViscous={false}
         viscous={30}
@@ -28,7 +28,7 @@ export default function SimpleLiquidBackground() {
         isBounce={false}
         autoDemo={true}
         autoSpeed={0.5}
-        autoIntensity={2.2}
+        autoIntensity={3}
         takeoverDuration={0.25}
         autoResumeDelay={3000}
         autoRampDuration={0.6}

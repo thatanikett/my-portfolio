@@ -4,7 +4,7 @@ import { AboutSection } from '@/components/sections/About'
 import { ProjectsSection } from '@/components/sections/Projects'
 import { ContactSection } from '@/components/sections/Contact'
 import GlobalLiquidBackground from '@/components/backgrounds/GlobalBackground'
-import SimpleNavbar from '@/components/Navbar'
+import SimpleNavbar from '@/components/ui/navbar'
 
 export default function Home() {
   return (

@@ -22,8 +22,8 @@ export function ProjectsSection() {
         padding: '2rem 1rem',
         position: 'relative',
         pointerEvents: 'none',
-        zIndex: 1,
-        background: '#1a1a1a'
+        zIndex: 2,
+        // background: '#1a1a1a'
       }}
     >
       <div style={{ maxWidth: '1200px', width: '100%', pointerEvents: 'auto' }}>
