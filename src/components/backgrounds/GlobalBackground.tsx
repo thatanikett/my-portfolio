@@ -1,7 +1,7 @@
 // src/components/backgrounds/GlobalBackground.tsx
 'use client'
 
-import LiquidEither from '@/components/backgrounds/LiquidEither'
+import Squares from '@/components/backgrounds/Squares'
 
 export default function SimpleLiquidBackground() {
   return (
@@ -16,28 +16,13 @@ export default function SimpleLiquidBackground() {
         overflow: 'hidden'
       }}
     >
-      <LiquidEither
-        colors={['#5227FF', '#FF9FFC', '#B19EEF']}
-        mouseForce={15}
-        cursorSize={100}
-        isViscous={false}
-        viscous={30}
-        iterationsViscous={32}
-        iterationsPoisson={32}
-        resolution={0.5}
-        isBounce={false}
-        autoDemo={true}
-        autoSpeed={0.5}
-        autoIntensity={3}
-        takeoverDuration={0.25}
-        autoResumeDelay={3000}
-        autoRampDuration={0.6}
-        style={{
-          width: '100%',
-          height: '100%'
-        }}
-        className=""
-      />
+    <Squares 
+    speed={0.5} 
+    squareSize={50}
+    direction='diagonal' // up, down, left, right, diagonal
+    borderColor='#3B3347'
+    hoverFillColor='#222222'
+    />
     </div>
   )
 }
