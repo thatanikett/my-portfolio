@@ -33,8 +33,7 @@ export function HeroSection() {
             href="#projects" 
             style={{
               padding: '1rem 2rem',
-              background: 'rgba(255, 255, 255, 0.2)',
-              backdropFilter: 'blur(10px)',
+              background: 'rgba(75, 85, 99, 0.5)',
               border: '1px solid rgba(255, 255, 255, 0.3)',
               borderRadius: '50px',
               color: 'white',
@@ -44,10 +43,10 @@ export function HeroSection() {
               transition: 'all 0.3s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'
+              e.currentTarget.style.background = 'rgba(75, 85, 99, 0.7)'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'
+              e.currentTarget.style.background = 'rgba(75, 85, 99, 0.5)'
             }}
           >
             View Projects
@@ -56,7 +55,7 @@ export function HeroSection() {
             href="#contact" 
             style={{
               padding: '1rem 2rem',
-              background: 'linear-gradient(45deg, #5227FF, #B19EEF)',
+              background: 'linear-gradient(135deg, #4B5563 0%, #1F2937 100%)',
               border: 'none',
               borderRadius: '50px',
               color: 'white',

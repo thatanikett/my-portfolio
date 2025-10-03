@@ -7,7 +7,7 @@ const skills = [
     image: '/icons/nodejs-3.svg',
     link: 'https://nodejs.org/',
     title: 'Node.js',
-    description: "A JavaScript library for building user interfaces.",
+    description: "A JavaScript runtime environment.",
     experience: "I have of experience with Node.js, building backend services."
   },
   {
