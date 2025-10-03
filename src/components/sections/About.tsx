@@ -341,6 +341,7 @@ export function AboutSection() {
               letterSpacing: "-0.02em",
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
               position: "relative",
+              marginTop:"3rem"
             }}
           >
             About Me
@@ -508,66 +509,120 @@ export function AboutSection() {
       </div>
 
       {/* Enhanced CSS Animation styles with 3D effects */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(10deg); }
-        }
-        
-        @keyframes float3d {
-          0%, 100% { transform: rotateX(45deg) rotateY(45deg) translateY(0px); }
-          50% { transform: rotateX(45deg) rotateY(45deg) translateY(-15px); }
-        }
-        
-        @keyframes rotate3d {
-          from { transform: rotateX(30deg) rotateY(0deg) rotateZ(45deg); }
-          to { transform: rotateX(30deg) rotateY(360deg) rotateZ(45deg); }
-        }
-        
-        @keyframes pulse3d {
-          0%, 100% { transform: rotateX(15deg) rotateZ(10deg) scale(1); opacity: 0.7; }
-          50% { transform: rotateX(15deg) rotateZ(10deg) scale(1.05); opacity: 0.9; }
-        }
-        
-        @keyframes bounce3d {
-          0%, 100% { transform: rotateX(25deg) rotateY(-15deg) rotateZ(-10deg) translateY(0px); }
-          50% { transform: rotateX(25deg) rotateY(-15deg) rotateZ(-10deg) translateY(-12px); }
-        }
-        
-        @keyframes pulse {
-          0%, 100% { opacity: 0.4; transform: scale(1); }
-          50% { opacity: 0.8; transform: scale(1.05); }
-        }
 
-        /* Mobile responsiveness */
-        @media (max-width: 1024px) {
-          div[style*="gridTemplateColumns: 'minmax(280px, 400px) 1fr'"] {
-            grid-template-columns: 1fr !important;
-            gap: 2rem !important;
-            text-align: center;
-          }
-          
-          h2[style*="textAlign: 'left'"] {
-            text-align: center !important;
-          }
-          
-          p[style*="textAlign: 'left'"] {
-            text-align: center !important;
-          }
-        }
-        
-        @media (max-width: 768px) {
-          div[style*="gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))'"] {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          section {
-            padding: 2rem 1rem !important;
-          }
-        }
-      `}</style>
+<style jsx>{`
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(10deg); }
+  }
+  
+  @keyframes float3d {
+    0%, 100% { transform: rotateX(45deg) rotateY(45deg) translateY(0px); }
+    50% { transform: rotateX(45deg) rotateY(45deg) translateY(-15px); }
+  }
+  
+  @keyframes rotate3d {
+    from { transform: rotateX(30deg) rotateY(0deg) rotateZ(45deg); }
+    to { transform: rotateX(30deg) rotateY(360deg) rotateZ(45deg); }
+  }
+  
+  @keyframes pulse3d {
+    0%, 100% { transform: rotateX(15deg) rotateZ(10deg) scale(1); opacity: 0.7; }
+    50% { transform: rotateX(15deg) rotateZ(10deg) scale(1.05); opacity: 0.9; }
+  }
+  
+  @keyframes bounce3d {
+    0%, 100% { transform: rotateX(25deg) rotateY(-15deg) rotateZ(-10deg) translateY(0px); }
+    50% { transform: rotateX(25deg) rotateY(-15deg) rotateZ(-10deg) translateY(-12px); }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+  }
+
+  /* Mobile responsiveness - 768px and below */
+  @media (max-width: 768px) {
+    /* Main container - define grid areas for mobile */
+    section > div:last-child {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      grid-template-areas: 
+        "heading"
+        "meme" 
+        "textbox"
+        "stats" !important;
+      gap: 2rem !important;
+      align-items: center !important;
+      text-align: center !important;
+    }
+    
+    /* Assign grid areas */
+    section > div:last-child > div:first-child {
+      grid-area: meme !important;
+    }
+    
+    section > div:last-child > div:last-child {
+      grid-area: unset !important;
+      display: contents !important;
+    }
+    
+    section h2 {
+      grid-area: heading !important;
+      text-align: center !important;
+      font-size: 2.5rem !important;
+      margin-bottom: 1rem !important;
+    }
+    
+    section h2 > div {
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      width: 60px !important;
+    }
+    
+    section > div:last-child > div:last-child > div:nth-child(2) {
+      grid-area: textbox !important;
+      border-radius: 16px !important;
+      padding: 1.5rem !important;
+      width: 100% !important;
+      max-width: 500px !important;
+      justify-self: center !important;
+    }
+    
+    section > div:last-child > div:last-child > div:last-child {
+      grid-area: stats !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 1rem !important;
+      margin-top: 0 !important;
+      width: 100% !important;
+      max-width: 500px !important;
+      justify-self: center !important;
+    }
+    
+    section p {
+      text-align: center !important;
+      font-size: 1.1rem !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    section {
+      padding: 1.5rem 0.5rem !important;
+    }
+    
+    section h2 {
+      font-size: 2rem !important;
+    }
+    
+    section p {
+      font-size: 1rem !important;
+    }
+    
+    section > div:last-child > div:last-child > div:last-child {
+      grid-template-columns: 1fr !important;
+    }
+  }
+`}</style>
     </section>
   );
 }

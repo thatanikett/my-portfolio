@@ -18,7 +18,6 @@ const FloatingNavbar: React.FC = () => {
     { name: 'Home', href: '/' },
     { name: 'About', href: '#about' },
     { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' },
     { name: 'Skills', href: '/skills' },
   ];
 
@@ -85,8 +84,8 @@ const FloatingNavbar: React.FC = () => {
     
     return {
       position: 'relative',
-      padding: isMobile ? '10px 16px' : '12px 24px', // Increased size
-      fontSize: isMobile ? '14px' : '16px', // Increased font size
+      padding: isMobile ? '10px 16px' : '12px 24px',
+      fontSize: isMobile ? '14px' : '16px',
       fontWeight: '500',
       color: isActive || isHovered ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.8)',
       background: isActive ? 'rgba(255, 255, 255, 0.2)' : (isHovered ? 'rgba(255, 255, 255, 0.15)' : 'transparent'),
@@ -104,16 +103,16 @@ const FloatingNavbar: React.FC = () => {
     };
   };
 
-  const getLoginButtonStyles = (): React.CSSProperties => {
-    const isHovered = hoveredItem === 'login';
+  const getContactButtonStyles = (): React.CSSProperties => {
+    const isHovered = hoveredItem === 'contact';
     
     return {
       background: isHovered 
         ? 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)'
         : 'linear-gradient(135deg, #4B5563 0%, #1F2937 100%)',
       color: isHovered ? '#111827' : '#ffffff',
-      padding: isMobile ? '10px 16px' : '14px 28px', // Increased size
-      fontSize: isMobile ? '14px' : '16px', // Increased font size
+      padding: isMobile ? '10px 16px' : '14px 28px',
+      fontSize: isMobile ? '14px' : '16px',
       fontWeight: '600',
       borderRadius: isMobile ? '14px' : '28px',
       textDecoration: 'none',
@@ -154,7 +153,7 @@ const FloatingNavbar: React.FC = () => {
             padding: 8px 14px !important;
           }
           
-          .floating-navbar-login {
+          .floating-navbar-contact {
             font-size: 13px !important;
             padding: 8px 14px !important;
           }
@@ -166,7 +165,7 @@ const FloatingNavbar: React.FC = () => {
             padding: 8px 12px !important;
           }
           
-          .floating-navbar-login {
+          .floating-navbar-contact {
             font-size: 12px !important;
             padding: 8px 12px !important;
           }
@@ -183,6 +182,7 @@ const FloatingNavbar: React.FC = () => {
             <Link
               key={item.name}
               href={item.href}
+              className="floating-navbar-link"
               style={getNavLinkStyles(item.name)}
               onClick={() => setActiveItem(item.name)}
               onMouseEnter={() => setHoveredItem(item.name)}
@@ -195,14 +195,16 @@ const FloatingNavbar: React.FC = () => {
           {/* Separator */}
           <div style={getSeparatorStyles()}></div>
           
-          {/* Login Button */}
+          {/* Let's Connect Button */}
           <Link
-            href="/login"
-            style={getLoginButtonStyles()}
-            onMouseEnter={() => setHoveredItem('login')}
+            href="#contact"
+            className="floating-navbar-contact"
+            style={getContactButtonStyles()}
+            onClick={() => setActiveItem("Let's Connect !")}
+            onMouseEnter={() => setHoveredItem('contact')}
             onMouseLeave={() => setHoveredItem(null)}
           >
-            Login
+            Let's Connect !
           </Link>
         </div>
       </nav>
