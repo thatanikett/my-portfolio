@@ -1,6 +1,7 @@
 // src/components/sections/Hero.tsx
 'use client'
 
+
 export function HeroSection() {
   return (
     <div style={{ 
@@ -18,7 +19,8 @@ export function HeroSection() {
         textAlign: 'center',
         pointerEvents: 'none'
       }}>
-        <h1 style={{ fontSize: '4rem', marginBottom: '1rem', fontWeight: 'bold' }}>Aniket Singh</h1>
+        <h1 style={{ fontSize: '6rem', marginBottom: '1rem', fontWeight: 'bold' }}>Aniket Singh</h1>
+
         <p style={{ fontSize: '1.5rem', marginBottom: '2rem', opacity: 0.9 }}>Full-Stack Developer & Linux Enthusiast</p>
         
         {/* Buttons */}
