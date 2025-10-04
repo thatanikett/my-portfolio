@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation'; // Import usePathname hook
 
 interface NavItem {
   name: string;
@@ -10,17 +11,45 @@ interface NavItem {
 
 const FloatingNavbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeItem, setActiveItem] = useState('Home');
-  const [isMobile, setIsMobile] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // NEW: Track modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Get current pathname
+  const pathname = usePathname(); // This detects the current page
 
   const navItems: NavItem[] = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '#about' },
     { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '/skills' },
+    { name: 'Skills', href: '/skills' }, // This goes to a different page
   ];
+
+  // Function to determine active item based on pathname
+  const getActiveItem = () => {
+    if (pathname === '/') {
+      // If on homepage, check for hash sections
+      if (typeof window !== 'undefined') {
+        const hash = window.location.hash;
+        if (hash === '#about') return 'About';
+        if (hash === '#projects') return 'Projects';
+      }
+      return 'Home'; // Default to Home when on homepage
+    } else if (pathname === '/skills') {
+      return 'Skills'; // When on skills page
+    } else if (pathname.startsWith('/')) {
+      // Handle other pages if needed
+      const pathParts = pathname.split('/');
+      const lastPart = pathParts[pathParts.length - 1];
+      const matchedItem = navItems.find(item => 
+        item.name.toLowerCase() === lastPart.toLowerCase()
+      );
+      return matchedItem ? matchedItem.name : 'Home';
+    }
+    return 'Home';
+  };
+
+  const activeItem = getActiveItem(); // Get active item dynamically
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,21 +60,28 @@ const FloatingNavbar: React.FC = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    // NEW: Listen for modal state changes
+    // Handle hash changes for section navigation on homepage
+    const handleHashChange = () => {
+      // Force re-render when hash changes
+      window.dispatchEvent(new Event('hashchange'));
+    };
+
     const handleModalOpen = () => setIsModalOpen(true);
     const handleModalClose = () => setIsModalOpen(false);
 
     handleResize();
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
-    window.addEventListener('modalOpen', handleModalOpen); // NEW
-    window.addEventListener('modalClose', handleModalClose); // NEW
+    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('modalOpen', handleModalOpen);
+    window.addEventListener('modalClose', handleModalClose);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('modalOpen', handleModalOpen); // NEW
-      window.removeEventListener('modalClose', handleModalClose); // NEW
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('modalOpen', handleModalOpen);
+      window.removeEventListener('modalClose', handleModalClose);
     };
   }, []);
 
@@ -56,25 +92,27 @@ const FloatingNavbar: React.FC = () => {
     transform: `translateX(-50%) scale(${isScrolled ? 0.98 : 1})`,
     zIndex: 9999,
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    opacity: isModalOpen ? 0 : 1, // NEW: Hide when modal is open
-    pointerEvents: isModalOpen ? 'none' : 'auto', // NEW: Disable interaction when hidden
+    opacity: isModalOpen ? 0 : 1,
+    pointerEvents: isModalOpen ? 'none' : 'auto',
     maxWidth: isMobile ? 'calc(100vw - 24px)' : 'auto',
     width: isMobile ? '100%' : 'auto',
   });
 
   const getContainerStyles = (): React.CSSProperties => ({
-    background: '#111827',
-    border: '1px solid rgba(75, 85, 99, 0.3)',
-    borderRadius: isMobile ? '20px' : '50px',
-    padding: isMobile ? '6px 8px' : '8px',
-    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05)',
+    background: 'rgba(17, 24, 39, 0.95)',
+    border: '2px solid rgba(255, 255, 255, 0.6)',
+    borderRadius: isMobile ? '24px' : '32px',
+    padding: isMobile ? '8px 12px' : '10px 16px',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: isMobile ? 'flex-start' : 'center',
-    gap: isMobile ? '4px' : '6px',
-    minHeight: isMobile ? '48px' : '60px',
+    gap: isMobile ? '6px' : '8px',
+    minHeight: isMobile ? '52px' : '64px',
     width: '100%',
     overflow: isMobile ? 'auto' : 'visible',
+    backdropFilter: 'blur(16px)',
+    WebkitBackdropFilter: 'blur(16px)',
     ...(isMobile && {
       overflowX: 'auto',
       overflowY: 'hidden',
@@ -87,27 +125,34 @@ const FloatingNavbar: React.FC = () => {
   });
 
   const getNavLinkStyles = (itemName: string): React.CSSProperties => {
-    const isActive = activeItem === itemName;
+    const isActive = activeItem === itemName; // Use dynamic active item
     const isHovered = hoveredItem === itemName;
     
     return {
       position: 'relative',
-      padding: isMobile ? '10px 16px' : '12px 24px',
-      fontSize: isMobile ? '14px' : '16px',
-      fontWeight: '500',
-      color: isActive || isHovered ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0.8)',
-      background: isActive ? 'rgba(255, 255, 255, 0.2)' : (isHovered ? 'rgba(255, 255, 255, 0.15)' : 'transparent'),
-      borderRadius: isMobile ? '14px' : '28px',
-      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      padding: isMobile ? '8px 16px' : '12px 20px',
+      fontSize: isMobile ? 'clamp(0.6rem, 2.5vw, 0.75rem)' : 'clamp(0.7rem, 1.5vw, 0.85rem)',
+      fontWeight: 'normal',
+      fontFamily: "var(--font-press-start), 'Courier New', monospace",
+      letterSpacing: 'clamp(0.02em, 0.5vw, 0.05em)',
+      color: isActive || isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.8)',
+      background: isActive 
+        ? 'rgba(75, 85, 99, 0.8)' 
+        : (isHovered ? 'rgba(255, 255, 255, 0.15)' : 'transparent'),
+      borderRadius: isMobile ? '16px' : '20px',
+      border: (isActive || isHovered) ? '1px solid rgba(255, 255, 255, 0.4)' : '1px solid transparent',
+      transition: 'all 0.3s ease',
       textDecoration: 'none',
       display: 'inline-block',
       cursor: 'pointer',
       whiteSpace: 'nowrap',
       textAlign: 'center',
       flex: isMobile ? 'none' : 'auto',
-      minWidth: isMobile ? 'auto' : 'auto',
-      transform: isHovered ? `translateY(-2px) scale(1.05)` : 'translateY(0px) scale(1)',
-      boxShadow: isActive ? '0 4px 15px rgba(255, 255, 255, 0.1)' : (isHovered ? '0 8px 25px rgba(255, 255, 255, 0.15)' : '0 0 0 0 rgba(255, 255, 255, 0)'),
+      textTransform: 'uppercase',
+      transform: isHovered ? 'translateY(-2px) scale(1.02)' : 'translateY(0px) scale(1)',
+      boxShadow: isActive 
+        ? '0 4px 16px rgba(75, 85, 99, 0.4)' 
+        : (isHovered ? '0 6px 20px rgba(255, 255, 255, 0.2)' : 'none'),
     };
   };
 
@@ -116,34 +161,38 @@ const FloatingNavbar: React.FC = () => {
     
     return {
       background: isHovered 
-        ? 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)'
+        ? 'linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%)'
         : 'linear-gradient(135deg, #4B5563 0%, #1F2937 100%)',
-      color: isHovered ? '#111827' : '#ffffff',
-      padding: isMobile ? '10px 16px' : '14px 28px',
-      fontSize: isMobile ? '14px' : '16px',
-      fontWeight: '600',
-      borderRadius: isMobile ? '14px' : '28px',
+      color: isHovered ? '#000000' : '#ffffff',
+      padding: isMobile ? '10px 16px' : '12px 24px',
+      fontSize: isMobile ? 'clamp(0.6rem, 2.5vw, 0.75rem)' : 'clamp(0.7rem, 1.5vw, 0.85rem)',
+      fontWeight: 'normal',
+      fontFamily: "var(--font-press-start), 'Courier New', monospace",
+      letterSpacing: 'clamp(0.02em, 0.5vw, 0.05em)',
+      borderRadius: isMobile ? '16px' : '20px',
+      border: '2px solid rgba(255, 255, 255, 0.8)',
       textDecoration: 'none',
       display: 'inline-block',
       cursor: 'pointer',
-      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      boxShadow: isHovered 
-        ? '0 8px 30px rgba(255, 255, 255, 0.4)'
-        : '0 4px 15px rgba(75, 85, 99, 0.3)',
-      marginLeft: isMobile ? '6px' : '10px',
-      border: 'none',
+      transition: 'all 0.3s ease',
+      marginLeft: isMobile ? '8px' : '12px',
       whiteSpace: 'nowrap',
       flexShrink: 0,
+      textTransform: 'uppercase',
       transform: isHovered ? 'translateY(-2px) scale(1.05)' : 'translateY(0px) scale(1)',
+      boxShadow: isHovered 
+        ? '0 8px 25px rgba(255, 255, 255, 0.3)' 
+        : '0 4px 12px rgba(75, 85, 99, 0.3)',
     };
   };
 
   const getSeparatorStyles = (): React.CSSProperties => ({
     width: '1px',
     height: isMobile ? '24px' : '28px',
-    background: 'rgba(75, 85, 99, 0.5)',
-    margin: isMobile ? '0 6px' : '0 10px',
+    background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.6), transparent)',
+    margin: isMobile ? '0 8px' : '0 12px',
     flexShrink: 0,
+    borderRadius: '0.5px',
   });
 
   return (
@@ -153,27 +202,45 @@ const FloatingNavbar: React.FC = () => {
           display: none;
         }
         
+        .floating-navbar-link, .floating-navbar-contact {
+          font-feature-settings: "kern" 1;
+        }
+        
         @media (max-width: 480px) {
           .floating-navbar-link {
-            font-size: 13px !important;
-            padding: 8px 14px !important;
+            font-size: clamp(0.5rem, 2vw, 0.7rem) !important;
+            padding: 6px 14px !important;
           }
           
           .floating-navbar-contact {
-            font-size: 13px !important;
+            font-size: clamp(0.5rem, 2vw, 0.7rem) !important;
             padding: 8px 14px !important;
           }
         }
 
         @media (max-width: 375px) {
           .floating-navbar-link {
-            font-size: 12px !important;
-            padding: 8px 12px !important;
+            font-size: clamp(0.45rem, 1.8vw, 0.65rem) !important;
+            padding: 6px 12px !important;
           }
           
           .floating-navbar-contact {
-            font-size: 12px !important;
+            font-size: clamp(0.45rem, 1.8vw, 0.65rem) !important;
             padding: 8px 12px !important;
+          }
+        }
+
+        @media (max-width: 320px) {
+          .floating-navbar-link {
+            font-size: 0.5rem !important;
+            padding: 5px 10px !important;
+            letter-spacing: 0.02em !important;
+          }
+          
+          .floating-navbar-contact {
+            font-size: 0.5rem !important;
+            padding: 6px 10px !important;
+            letter-spacing: 0.02em !important;
           }
         }
       `}</style>
@@ -189,7 +256,6 @@ const FloatingNavbar: React.FC = () => {
               href={item.href}
               className="floating-navbar-link"
               style={getNavLinkStyles(item.name)}
-              onClick={() => setActiveItem(item.name)}
               onMouseEnter={() => setHoveredItem(item.name)}
               onMouseLeave={() => setHoveredItem(null)}
             >
@@ -203,11 +269,10 @@ const FloatingNavbar: React.FC = () => {
             href="#contact"
             className="floating-navbar-contact"
             style={getContactButtonStyles()}
-            onClick={() => setActiveItem("Let's Connect !")}
             onMouseEnter={() => setHoveredItem('contact')}
             onMouseLeave={() => setHoveredItem(null)}
           >
-            Let's Connect !
+            {isMobile ? "CONNECT" : "LET'S CONNECT"}
           </Link>
         </div>
       </nav>
