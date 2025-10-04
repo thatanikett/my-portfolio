@@ -458,6 +458,7 @@ export function AboutSection() {
       transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
       position: "relative",
       overflow: "hidden",
+      cursor: "pointer", // Add cursor pointer to indicate it's hoverable
     }}
     onMouseEnter={(e) => {
       const target = e.target as HTMLElement;
@@ -472,15 +473,19 @@ export function AboutSection() {
       target.style.boxShadow = "none";
     }}
   >
+    {/* Emoji - No hover interaction */}
     <div
       style={{
         fontSize: "clamp(1.5rem, 2.5vw, 2rem)",
         marginBottom: "0.5rem",
         filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))",
+        pointerEvents: "none", // Prevent hover on this element
       }}
     >
       {stat.icon}
     </div>
+    
+    {/* Number - No hover interaction */}
     <div
       style={{
         fontSize: stat.number.includes("Ctrl") 
@@ -491,24 +496,29 @@ export function AboutSection() {
         marginBottom: "0.3rem",
         textShadow: `0 0 15px ${stat.color}50`,
         fontFamily: stat.number.includes("Ctrl") ? "monospace" : "inherit",
+        pointerEvents: "none", // Prevent hover on this element
       }}
     >
       {stat.number}
     </div>
+    
+    {/* Label - No hover interaction */}
     <div
       style={{
         fontSize: "clamp(0.8rem, 1.2vw, 0.95rem)",
         color: "rgba(255, 255, 255, 0.8)",
-        fontWeight: "600", // Bold for ALL labels
+        fontWeight: "600",
         lineHeight: "1.2",
-        textTransform: "uppercase", // Uppercase for ALL labels
-        letterSpacing: "0.5px", // Letter spacing for ALL labels
+        textTransform: "uppercase",
+        letterSpacing: "0.5px",
+        pointerEvents: "none", // Prevent hover on this element
       }}
     >
       {stat.label}
     </div>
   </div>
 ))}
+
 
           </div>
         </div>
