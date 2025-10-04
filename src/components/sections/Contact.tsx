@@ -87,7 +87,7 @@ export function ContactSection() {
           }}
         >
           <a
-            href="mailto:your@email.com"
+            href="mailto:aniketsingh4269@gmail.com"
             aria-label="Send Email"
             style={{
               padding: "1rem 2rem",
@@ -118,7 +118,7 @@ export function ContactSection() {
           </a>
 
           <a
-            href="https://linkedin.com/in/yourprofile"
+            href="https://www.linkedin.com/in/aniket-singh-8835b5319/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Open LinkedIn"
@@ -165,7 +165,7 @@ export function ContactSection() {
           }}
         >
           <SocialButton
-            href="https://github.com/yourhandle"
+            href="https://github.com/thatanikett"
             label="GitHub"
             brand="github"
             svg={
@@ -176,7 +176,7 @@ export function ContactSection() {
           />
 
           <SocialButton
-            href="https://linkedin.com/in/yourprofile"
+            href="https://www.linkedin.com/in/aniket-singh-8835b5319/"
             label="LinkedIn"
             brand="linkedin"
             svg={
@@ -187,7 +187,7 @@ export function ContactSection() {
           />
 
           <SocialButton
-            href="https://x.com/yourhandle"
+            href="https://x.com/anikett78"
             label="X"
             brand="x"
             svg={
