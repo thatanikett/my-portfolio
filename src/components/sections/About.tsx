@@ -441,69 +441,75 @@ export function AboutSection() {
             }}
           >
             {[
-              { number: "50+", label: "Projects Built", icon: "🚀", color: "#ef4444" },
-              { number: "3+", label: "Years Experience", icon: "⏱️", color: "#f59e0b" },
-              { number: "10+", label: "Technologies", icon: "💻", color: "#8b5cf6" },
-              { number: "∞", label: "Debug Hours", icon: "🐛", color: "#10b981" },
-            ].map((stat, index) => (
-              <div
-                key={index}
-                style={{
-                  padding: "clamp(1.2rem, 2vw, 1.8rem) clamp(0.8rem, 1.5vw, 1.2rem)",
-                  background: "rgba(255, 255, 255, 0.06)",
-                  border: `2px solid ${stat.color}30`,
-                  borderRadius: "20px",
-                  textAlign: "center",
-                  backdropFilter: "blur(15px)",
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-                onMouseEnter={(e) => {
-                  const target = e.target as HTMLElement;
-                  target.style.transform = "translateY(-8px) scale(1.03)";
-                  target.style.background = `${stat.color}15`;
-                  target.style.boxShadow = `0 15px 40px ${stat.color}25`;
-                }}
-                onMouseLeave={(e) => {
-                  const target = e.target as HTMLElement;
-                  target.style.transform = "translateY(0) scale(1)";
-                  target.style.background = "rgba(255, 255, 255, 0.06)";
-                  target.style.boxShadow = "none";
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "clamp(1.5rem, 2.5vw, 2rem)",
-                    marginBottom: "0.5rem",
-                    filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))",
-                  }}
-                >
-                  {stat.icon}
-                </div>
-                <div
-                  style={{
-                    fontSize: "clamp(1.4rem, 2.2vw, 1.8rem)",
-                    fontWeight: "700",
-                    color: stat.color,
-                    marginBottom: "0.3rem",
-                    textShadow: `0 0 15px ${stat.color}50`,
-                  }}
-                >
-                  {stat.number}
-                </div>
-                <div
-                  style={{
-                    fontSize: "clamp(0.8rem, 1.2vw, 0.95rem)",
-                    color: "rgba(255, 255, 255, 0.8)",
-                    fontWeight: "500",
-                    lineHeight: "1.2",
-                  }}
-                >
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+  { number: "99+", label: "Stack Overflow Visits", icon: "📚", color: "#ef4444" },
+  { number: "Ctrl+C, Ctrl+V", label: "Mastery", icon: "🔄", color: "#f59e0b" },
+  { number: "20+", label: "Distro Hops", icon: "🐧", color: "#8b5cf6" },
+  { number: "∞", label: "Debug Hours", icon: "🐛", color: "#10b981" },
+].map((stat, index) => (
+  <div
+    key={index}
+    style={{
+      padding: "clamp(1.2rem, 2vw, 1.8rem) clamp(0.8rem, 1.5vw, 1.2rem)",
+      background: "rgba(255, 255, 255, 0.06)",
+      border: `2px solid ${stat.color}30`,
+      borderRadius: "20px",
+      textAlign: "center",
+      backdropFilter: "blur(15px)",
+      transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+      position: "relative",
+      overflow: "hidden",
+    }}
+    onMouseEnter={(e) => {
+      const target = e.target as HTMLElement;
+      target.style.transform = "translateY(-8px) scale(1.03)";
+      target.style.background = `${stat.color}15`;
+      target.style.boxShadow = `0 15px 40px ${stat.color}25`;
+    }}
+    onMouseLeave={(e) => {
+      const target = e.target as HTMLElement;
+      target.style.transform = "translateY(0) scale(1)";
+      target.style.background = "rgba(255, 255, 255, 0.06)";
+      target.style.boxShadow = "none";
+    }}
+  >
+    <div
+      style={{
+        fontSize: "clamp(1.5rem, 2.5vw, 2rem)",
+        marginBottom: "0.5rem",
+        filter: "drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))",
+      }}
+    >
+      {stat.icon}
+    </div>
+    <div
+      style={{
+        fontSize: stat.number.includes("Ctrl") 
+          ? "clamp(1rem, 1.6vw, 1.3rem)" // Smaller size for Ctrl+C, Ctrl+V
+          : "clamp(1.4rem, 2.2vw, 1.8rem)", // Normal size for others
+        fontWeight: "700",
+        color: stat.color,
+        marginBottom: "0.3rem",
+        textShadow: `0 0 15px ${stat.color}50`,
+        fontFamily: stat.number.includes("Ctrl") ? "monospace" : "inherit",
+      }}
+    >
+      {stat.number}
+    </div>
+    <div
+      style={{
+        fontSize: "clamp(0.8rem, 1.2vw, 0.95rem)",
+        color: "rgba(255, 255, 255, 0.8)",
+        fontWeight: "600", // Bold for ALL labels
+        lineHeight: "1.2",
+        textTransform: "uppercase", // Uppercase for ALL labels
+        letterSpacing: "0.5px", // Letter spacing for ALL labels
+      }}
+    >
+      {stat.label}
+    </div>
+  </div>
+))}
+
           </div>
         </div>
       </div>
