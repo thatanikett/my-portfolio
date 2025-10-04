@@ -137,10 +137,10 @@ export default function ExpandableCardproject() {
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
             letterSpacing: "-0.02em",
-            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            fontFamily: "var(--font-press-start), 'Courier New', monospace",
             position: "relative",
             marginTop: "6rem",
-            marginBottom: "10px",
+            marginBottom: "20px",
           }}>
           My Projects
         </h2>
@@ -333,6 +333,26 @@ export default function ExpandableCardproject() {
         ))}
       </ul>
 
+      {/* Stylized Watermark Text */}
+      <div className="flex justify-center items-center mt-20 mb-12 relative">
+        <div className="relative">
+          <p 
+            className="text-center text-lg md:text-xl font-light italic opacity-50 transition-all duration-500 hover:opacity-80 hover:scale-105 cursor-default"
+            style={{
+              fontSize: "2rem",
+              background: "linear-gradient(135deg, #6b7280 0%, #9ca3af 50%, #d1d5db 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              letterSpacing: "0.5px",
+            }}
+          >
+            ...and many cool stuffs ahead
+          </p>
+        </div>
+      </div>
+
+
       {/* Floating Animation Styles + Responsive Positioning */}
       <style jsx>{`
         @keyframes float {
@@ -411,44 +431,37 @@ const GitHubIcon = () => (
   </svg>
 );
 
-// Cards data
+// Updated Cards data with correct tech stacks
 const cards = [
   {
-    title: "Todo Web App", 
-    src: "/images/todo.png",
-    liveLink: "https://your-todo-app.vercel.app",
-    githubLink: "https://github.com/yourusername/todo-app",
-    techStack: [
-      { name: "React", icon: "https://skillicons.dev/icons?i=react" },
-      { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
-      { name: "MongoDB", icon: "https://skillicons.dev/icons?i=mongodb" },
-      { name: "Tailwind", icon: "https://skillicons.dev/icons?i=tailwind" }
-    ],
-    content: () => {
-      return (
-        <p>
-          A modern todo web application built with React and Node.js, featuring 
-          real-time updates and a clean, intuitive interface. Users can create, 
-          edit, delete, and organize tasks with drag-and-drop functionality. 
-          <br /><br />
-          The application includes user authentication, task categorization, due date 
-          reminders, and progress tracking. Built with responsive design principles, 
-          it works seamlessly across desktop and mobile devices. Features include 
-          dark/light theme toggle, local storage persistence, and smooth animations 
-          for enhanced user experience.
-        </p>
-      );
-    },
+  title: "Todo Web App", 
+  src: "/images/todo.png",
+  liveLink: "https://your-todo-app.vercel.app",
+  githubLink: "https://github.com/yourusername/todo-app",
+  techStack: [
+    { name: "HTML", icon: "https://skillicons.dev/icons?i=html" },
+    { name: "CSS", icon: "https://skillicons.dev/icons?i=css" },
+    { name: "JavaScript", icon: "https://skillicons.dev/icons?i=js" }
+  ],
+  content: () => {
+    return (
+      <p>
+        A simple todo application built using vanilla HTML, CSS, and JavaScript as a learning project to understand DOM manipulation and client-side data storage concepts. Features include adding new tasks, deleting individual tasks, and clearing all tasks at once.
+        <br /><br />
+        This project demonstrates core JavaScript fundamentals including DOM element creation and manipulation, event handling, and local storage implementation to persist tasks between browser sessions. Built entirely with vanilla technologies to focus on understanding the underlying web development concepts without frameworks or libraries.
+      </p>
+    );
   },
+},
   {
     title: "Knowledge Nest",
     src: "/images/blog.png",
     liveLink: "https://thatanikett.github.io/knowlegde-nest/",
     githubLink: "https://github.com/thatanikett/knowlegde-nest",
     techStack: [
-      { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
-      { name: "MongoDB", icon: "https://skillicons.dev/icons?i=mongodb" },
-      { name: "TypeScript", icon: "https://skillicons.dev/icons?i=typescript" }
+      { name: "HTML", icon: "https://skillicons.dev/icons?i=html" },
+      { name: "CSS", icon: "https://skillicons.dev/icons?i=css" },
+      { name: "JavaScript", icon: "https://skillicons.dev/icons?i=js" }
     ],
     content: () => {
       return (
@@ -460,16 +473,36 @@ const cards = [
       );
     },
   },
+    {
+    title: "Weather Web Application",
+    src: "/images/weather.png", 
+    liveLink: "https://your-weather-app.vercel.app",
+    githubLink: "https://github.com/yourusername/weather-app",
+    techStack: [
+      { name: "HTML", icon: "https://skillicons.dev/icons?i=html" },
+      { name: "CSS", icon: "https://skillicons.dev/icons?i=css" },
+      { name: "JavaScript", icon: "https://skillicons.dev/icons?i=js" }
+    ],
+    content: () => {
+      return (
+        <p>
+          A simple weather application built for learning API handling for the first time. This project demonstrates fundamental JavaScript concepts including DOM manipulation, API fetching, and dynamic content rendering.
+          <br /><br />
+          The application fetches real-time weather data from a weather API and displays current conditions for user-searched locations. Built entirely with vanilla JavaScript using DOM manipulation techniques, it features clean styling with CSS and responsive design principles for an optimal user experience across devices.
+        </p>
+      );
+    },
+  },
   {
     title: "FND",
     src: "/images/fnd.png", 
     liveLink: "https://fnd-three.vercel.app/",
     githubLink: "https://github.com/thatanikett/FND",
     techStack: [
-      { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
-      { name: "TypeScript", icon: "https://skillicons.dev/icons?i=typescript" },
-      { name: "Tailwind", icon: "https://skillicons.dev/icons?i=tailwind" },
-      { name: "CSS", icon: "https://skillicons.dev/icons?i=css" }
+      { name: "Vite", icon: "https://skillicons.dev/icons?i=vite" },
+      { name: "React", icon: "https://skillicons.dev/icons?i=react" },
+      { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" },
+      { name: "Tailwind", icon: "https://skillicons.dev/icons?i=tailwind" }
     ],
     content: () => {
       return (
@@ -477,32 +510,6 @@ const cards = [
           F.N.D. is a web-based application that analyzes news articles and text to provide a credibility score. It uses a set of heuristics to identify potential fake news, propaganda, and misinformation. The application features a retro-terminal design for its user interface.
           <br /><br />
           This application is a demonstration and should not be used to determine the credibility of real news articles. The analysis is based on a limited set of rules and does not guarantee accuracy. Always verify important claims through multiple reputable sources
-        </p>
-      );
-    },
-  },
-  {
-    title: "Weather Web Application",
-    src: "/images/weather.png", 
-    liveLink: "https://your-weather-app.vercel.app",
-    githubLink: "https://github.com/yourusername/weather-app",
-    techStack: [
-      { name: "React", icon: "https://skillicons.dev/icons?i=react" },
-      { name: "JavaScript", icon: "https://skillicons.dev/icons?i=javascript" },
-      { name: "CSS", icon: "https://skillicons.dev/icons?i=css" }
-    ],
-    content: () => {
-      return (
-        <p>
-          A comprehensive weather application providing real-time weather data 
-          and forecasts for locations worldwide. Built with React and integrated 
-          with OpenWeatherMap API for accurate, up-to-date information. 
-          <br /><br />
-          Features include current weather conditions, 7-day forecasts, hourly 
-          predictions, and weather maps. The app includes geolocation support, 
-          favorite locations, weather alerts, and beautiful animated backgrounds 
-          that change based on weather conditions. Designed with accessibility 
-          in mind and optimized for both desktop and mobile experiences.
         </p>
       );
     },

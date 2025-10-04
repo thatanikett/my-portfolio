@@ -339,9 +339,10 @@ export function AboutSection() {
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
               letterSpacing: "-0.02em",
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+              fontFamily: "var(--font-press-start), 'Courier New', monospace",
               position: "relative",
-              marginTop:"3rem"
+              marginTop:"3rem",
+              marginLeft: "-2rem"
             }}
           >
             About Me
