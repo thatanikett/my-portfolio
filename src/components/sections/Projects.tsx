@@ -72,8 +72,62 @@ export default function ExpandableCardproject() {
 
   return (
     <div className="py-20" id="projects">
-      {/* Section Heading */}
-      <div className="flex flex-col items-center mb-16 text-center">
+      {/* Section Heading with Floating Emoji */}
+      <div className="flex flex-col items-center mb-16 text-center relative">
+        {/* Floating Thinking Emoji - Responsive Positioning */}
+        <div
+          style={{
+            // Desktop positioning (left of heading)
+            position: "absolute",
+            top: "5rem",
+            left: "-5rem",
+            width: "clamp(6rem, 10vw, 12rem)",
+            height: "clamp(6rem, 10vw, 12rem)",
+            animation: "float 4s ease-in-out infinite",
+            cursor: "pointer",
+            zIndex: 10,
+            filter: "drop-shadow(0 0 20px rgba(255, 193, 7, 0.8)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))",
+            transition: "filter 0.3s ease",
+          }}
+          className="floating-emoji-responsive"
+          onMouseEnter={(e) => {
+            const outerDiv = e.currentTarget;
+            const transformDiv = outerDiv.querySelector('.transform-div') as HTMLElement;
+            
+            outerDiv.style.filter = "drop-shadow(0 0 30px rgba(255, 193, 7, 1)) drop-shadow(0 0 15px rgba(0, 0, 0, 0.7))";
+            
+            if (transformDiv) {
+              transformDiv.style.transform = "scale(1.3) rotate(15deg)";
+            }
+          }}
+          onMouseLeave={(e) => {
+            const outerDiv = e.currentTarget;
+            const transformDiv = outerDiv.querySelector('.transform-div') as HTMLElement;
+            
+            outerDiv.style.filter = "drop-shadow(0 0 20px rgba(255, 193, 7, 0.8)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))";
+            
+            if (transformDiv) {
+              transformDiv.style.transform = "scale(1) rotate(0deg)";
+            }
+          }}
+        >
+          <div 
+            className="transform-div"
+            style={{
+              width: "100%",
+              height: "100%",
+              transition: "transform 0.3s ease",
+            }}
+          >
+            <Image
+              src="/images/think2.png"
+              alt="Thinking emoji"
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+        </div>
+
         <h2 style={{
             fontSize: "clamp(2.5rem, 5vw, 4rem)",
             fontWeight: "700",
@@ -105,16 +159,16 @@ export default function ExpandableCardproject() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: "easeOut" }} // Faster, simpler transition
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="fixed inset-0 bg-black/60 h-full w-full z-50"
             />
             
             {/* Modal Container - Simplified */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }} // Simple scale + fade
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.25, ease: "easeOut" }} // Smooth but quick
+              transition={{ duration: 0.25, ease: "easeOut" }}
               className="fixed inset-0 grid place-items-center z-50"
             >
               {/* Close Button */}
@@ -133,7 +187,7 @@ export default function ExpandableCardproject() {
               <motion.div
                 ref={ref}
                 className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
-                initial={{ y: 20 }} // Subtle slide up
+                initial={{ y: 20 }}
                 animate={{ y: 0 }}
                 exit={{ y: 20 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
@@ -238,8 +292,8 @@ export default function ExpandableCardproject() {
             onClick={() => setActive(card)}
             className="group p-6 flex flex-col hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-2xl cursor-pointer transition-all duration-200 hover:shadow-lg"
             style={{padding:"1rem"}}
-            whileHover={{ scale: 1.02 }} // Simple hover scale
-            whileTap={{ scale: 0.98 }} // Simple tap feedback
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
             <div className="flex gap-6 flex-col w-full">
               <div className="relative h-48 md:h-56 w-full rounded-xl overflow-hidden">
@@ -278,11 +332,49 @@ export default function ExpandableCardproject() {
           </motion.div>
         ))}
       </ul>
+
+      {/* Floating Animation Styles + Responsive Positioning */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-15px);
+          }
+        }
+        
+        /* Mobile positioning - emoji above heading */
+        @media (max-width: 768px) {
+          .floating-emoji-responsive {
+            position: static !important;
+            top: auto !important;
+            left: auto !important;
+            margin: 0 auto 2rem auto !important;
+            width: 4rem !important;
+            height: 4rem !important;
+            display: block !important;
+          }
+          
+          /* Adjust heading margin for mobile */
+          h2 {
+            margin-top: 2rem !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .floating-emoji-responsive {
+            width: 3.5rem !important;
+            height: 3.5rem !important;
+            margin-bottom: 1.5rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
 
-// Keep all your existing icons and cards array exactly the same
+// Icons
 export const CloseIcon = () => {
   return (
     <motion.svg
@@ -319,6 +411,7 @@ const GitHubIcon = () => (
   </svg>
 );
 
+// Cards data
 const cards = [
   {
     title: "Todo Web App", 
@@ -390,7 +483,7 @@ const cards = [
   },
   {
     title: "Weather Web Application",
-    src: "/images/image.png", 
+    src: "/images/weather.png", 
     liveLink: "https://your-weather-app.vercel.app",
     githubLink: "https://github.com/yourusername/weather-app",
     techStack: [
