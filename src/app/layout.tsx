@@ -1,9 +1,10 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Press_Start_2P } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";
 
+// Font configurations
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -14,11 +15,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const pressStart2P = Press_Start_2P({ 
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-press-start', // Add a CSS variable
+});
+
 export const metadata: Metadata = {
   title: "My Portfolio",
   description: "Personal portfolio website",
 };
 
+// Single RootLayout function
 export default function RootLayout({
   children,
 }: {
@@ -27,13 +36,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body 
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} antialiased`}
         style={{
-          // CRITICAL: Ensure body doesn't block WebGL canvas
           background: 'transparent',
-          // Prevent stacking context issues
           position: 'relative',
-          // Allow WebGL to render
           isolation: 'auto'
         }}
       >
@@ -43,7 +49,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* Add a fallback background div for non-WebGL content */}
           <div 
             className="fallback-background"
             style={{
