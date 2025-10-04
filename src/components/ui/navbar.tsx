@@ -13,6 +13,7 @@ const FloatingNavbar: React.FC = () => {
   const [activeItem, setActiveItem] = useState('Home');
   const [isMobile, setIsMobile] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // NEW: Track modal state
 
   const navItems: NavItem[] = [
     { name: 'Home', href: '/' },
@@ -30,13 +31,21 @@ const FloatingNavbar: React.FC = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
+    // NEW: Listen for modal state changes
+    const handleModalOpen = () => setIsModalOpen(true);
+    const handleModalClose = () => setIsModalOpen(false);
+
     handleResize();
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
+    window.addEventListener('modalOpen', handleModalOpen); // NEW
+    window.addEventListener('modalClose', handleModalClose); // NEW
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('modalOpen', handleModalOpen); // NEW
+      window.removeEventListener('modalClose', handleModalClose); // NEW
     };
   }, []);
 
@@ -47,7 +56,8 @@ const FloatingNavbar: React.FC = () => {
     transform: `translateX(-50%) scale(${isScrolled ? 0.98 : 1})`,
     zIndex: 9999,
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    opacity: 1,
+    opacity: isModalOpen ? 0 : 1, // NEW: Hide when modal is open
+    pointerEvents: isModalOpen ? 'none' : 'auto', // NEW: Disable interaction when hidden
     maxWidth: isMobile ? 'calc(100vw - 24px)' : 'auto',
     width: isMobile ? '100%' : 'auto',
   });
@@ -65,14 +75,12 @@ const FloatingNavbar: React.FC = () => {
     minHeight: isMobile ? '48px' : '60px',
     width: '100%',
     overflow: isMobile ? 'auto' : 'visible',
-    // Enable smooth scrolling on mobile
     ...(isMobile && {
       overflowX: 'auto',
       overflowY: 'hidden',
       whiteSpace: 'nowrap',
       scrollBehavior: 'smooth',
       WebkitOverflowScrolling: 'touch',
-      // Hide scrollbar but keep functionality
       scrollbarWidth: 'none',
       msOverflowStyle: 'none',
     }),
@@ -141,12 +149,10 @@ const FloatingNavbar: React.FC = () => {
   return (
     <>
       <style jsx>{`
-        /* Hide scrollbar but keep scrolling functionality */
         .floating-navbar-container::-webkit-scrollbar {
           display: none;
         }
         
-        /* Mobile adjustments */
         @media (max-width: 480px) {
           .floating-navbar-link {
             font-size: 13px !important;
@@ -177,7 +183,6 @@ const FloatingNavbar: React.FC = () => {
           className="floating-navbar-container"
           style={getContainerStyles()}
         >
-          {/* Navigation Links */}
           {navItems.map((item) => (
             <Link
               key={item.name}
@@ -192,10 +197,8 @@ const FloatingNavbar: React.FC = () => {
             </Link>
           ))}
           
-          {/* Separator */}
           <div style={getSeparatorStyles()}></div>
           
-          {/* Let's Connect Button */}
           <Link
             href="#contact"
             className="floating-navbar-contact"

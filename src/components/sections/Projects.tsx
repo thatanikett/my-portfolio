@@ -20,6 +20,9 @@ export default function ExpandableCardproject() {
     }
 
     if (active && typeof active === "object") {
+      // NEW: Dispatch event to hide navbar
+      window.dispatchEvent(new CustomEvent('modalOpen'));
+      
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
       window.addEventListener("keydown", onKeyDown);
@@ -33,6 +36,9 @@ export default function ExpandableCardproject() {
       document.addEventListener('touchmove', preventDefault, { passive: false });
       
       return () => {
+        // NEW: Dispatch event to show navbar
+        window.dispatchEvent(new CustomEvent('modalClose'));
+        
         document.body.style.overflow = "auto";
         document.documentElement.style.overflow = "auto";
         window.removeEventListener("keydown", onKeyDown);
@@ -46,29 +52,28 @@ export default function ExpandableCardproject() {
   return (
     <div className="py-20" id="projects">
       {/* Section Heading */}
-<div className="flex flex-col items-center mb-16">
-  <h2 style={{
-              fontSize: "clamp(2.5rem, 5vw, 4rem)",
-              fontWeight: "700",
-              // marginBottom: "clamp(2rem, 4vw, 3rem)",
-              textAlign: "left",
-              background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              letterSpacing: "-0.02em",
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-              position: "relative",
-              marginTop:"6rem",
-              marginBottom:"10px",
-            }}>
-    My Projects
-  </h2>
-  <p className="text-wrap md:text-nowrap text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto leading-relaxed" style={{marginBottom:"2rem"}}>
-  A showcase of my latest web development projects, featuring modern technologies and innovative solutions
-</p>
-</div>
-
+      <div className="flex flex-col items-center mb-16 text-center">
+        <h2 style={{
+            fontSize: "clamp(2.5rem, 5vw, 4rem)",
+            fontWeight: "700",
+            textAlign: "center",
+            background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            letterSpacing: "-0.02em",
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            position: "relative",
+            marginTop: "6rem",
+            marginBottom: "10px",
+          }}>
+          My Projects
+        </h2>
+        <p className="text-center text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto leading-relaxed" 
+           style={{marginBottom:"2rem"}}>
+          A showcase of my latest web development projects, featuring modern technologies and innovative solutions
+        </p>
+      </div>
 
       <AnimatePresence>
         {active && typeof active === "object" && (
@@ -76,14 +81,14 @@ export default function ExpandableCardproject() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/20 h-full w-full z-10"
+            className="fixed inset-0 bg-black/60 h-full w-full z-50"
           />
         )}
       </AnimatePresence>
       
       <AnimatePresence>
         {active && typeof active === "object" ? (
-          <div className="fixed inset-0 grid place-items-center z-[100]">
+          <div className="fixed inset-0 grid place-items-center z-50">
             <motion.button
               key={`button-${active.title}-${id}`}
               layout
@@ -96,11 +101,13 @@ export default function ExpandableCardproject() {
               <CloseIcon />
             </motion.button>
             
+            {/* Rest of your modal content stays exactly the same */}
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
               className="w-full max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
             >
+              {/* All your existing modal content here - don't change anything */}
               <motion.div layoutId={`image-${active.title}-${id}`}>
                 <div className="relative w-full h-80 lg:h-80">
                   <Image
@@ -116,7 +123,6 @@ export default function ExpandableCardproject() {
 
               <div>
                 <div className="p-6">
-                  {/* Title and Buttons in same row */}
                   <div className="flex justify-between items-start mb-6" style={{margin:"1rem"}}>
                     <div className="flex-1 pr-4">
                       <motion.h3
@@ -127,7 +133,6 @@ export default function ExpandableCardproject() {
                       </motion.h3>
                     </div>
                     
-                    {/* Action Buttons */}
                     <div className="flex gap-3 flex-shrink-0">
                       <motion.a
                         layout
@@ -161,7 +166,6 @@ export default function ExpandableCardproject() {
                     </div>
                   </div>
 
-                  {/* Tech Stack Icons */}
                   <div className="flex flex-wrap gap-3 mb-6" style={{marginLeft:"1rem"}}>
                     {active.techStack.map((tech, index) => (
                       <img
@@ -175,7 +179,6 @@ export default function ExpandableCardproject() {
                   </div>
                 </div>
 
-                {/* Project Description */}
                 <div className="px-6 pb-8 relative" style={{padding:"1rem", marginBottom:"4rem"}}>
                   <motion.div
                     layout
@@ -217,7 +220,7 @@ export default function ExpandableCardproject() {
         ) : null}
       </AnimatePresence>
 
-      {/* Card Grid */}
+      {/* Card Grid - Keep exactly the same */}
       <ul className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-8" style={{padding:"1rem"}}>
         {cards.map((card, index) => (
           <motion.div
@@ -235,7 +238,6 @@ export default function ExpandableCardproject() {
                     alt={card.title}
                     fill
                     className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
-                    // style={{border:"1rem", borderColor:"white" , borderWidth:"4rem"}}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
@@ -248,7 +250,6 @@ export default function ExpandableCardproject() {
                   {card.title}
                 </motion.h3>
                 
-                {/* Tech Stack Icons */}
                 <div className="flex flex-wrap gap-3 justify-center">
                   {card.techStack.slice(0, 4).map((tech, index) => (
                     <img
@@ -274,8 +275,7 @@ export default function ExpandableCardproject() {
   );
 }
 
-// ... (rest of the component icons remain the same)
-
+// Keep all your existing icons and cards array exactly the same
 export const CloseIcon = () => {
   return (
     <motion.svg
@@ -312,11 +312,10 @@ const GitHubIcon = () => (
   </svg>
 );
 
-// Update your cards array to use local image paths
 const cards = [
   {
     title: "Todo Web App", 
-    src: "/images/todo.png", // Place image in public/images/todo-app.jpg
+    src: "/images/todo.png",
     liveLink: "https://your-todo-app.vercel.app",
     githubLink: "https://github.com/yourusername/todo-app",
     techStack: [
@@ -343,9 +342,9 @@ const cards = [
   },
   {
     title: "Knowledge Nest",
-    src: "/images/blog.png", // Place image in public/images/blog-website.jpg
-    liveLink: "https://your-blog.vercel.app",
-    githubLink: "https://github.com/yourusername/blog-website",
+    src: "/images/blog.png",
+    liveLink: "https://thatanikett.github.io/knowlegde-nest/",
+    githubLink: "https://github.com/thatanikett/knowlegde-nest",
     techStack: [
       { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
       { name: "MongoDB", icon: "https://skillicons.dev/icons?i=mongodb" },
@@ -363,9 +362,9 @@ const cards = [
   },
   {
     title: "FND",
-    src: "/images/fnd.png", // Place image in public/images/portfolio.jpg
-    liveLink: "https://your-portfolio.vercel.app",
-    githubLink: "https://github.com/yourusername/portfolio",
+    src: "/images/fnd.png", 
+    liveLink: "https://fnd-three.vercel.app/",
+    githubLink: "https://github.com/thatanikett/FND",
     techStack: [
       { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
       { name: "TypeScript", icon: "https://skillicons.dev/icons?i=typescript" },
@@ -384,7 +383,7 @@ const cards = [
   },
   {
     title: "Weather Web Application",
-    src: "", // Place image in public/images/weather-app.jpg
+    src: "", 
     liveLink: "https://your-weather-app.vercel.app",
     githubLink: "https://github.com/yourusername/weather-app",
     techStack: [
