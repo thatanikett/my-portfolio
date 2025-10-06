@@ -219,7 +219,7 @@ export function ContactSection() {
           height: "auto",
           pointerEvents: "none",
           zIndex: 10,
-          opacity: 0.9
+          // opacity: 0.9
         }}
       >
         <img
@@ -288,7 +288,6 @@ export function ContactSection() {
         @media (max-width: 480px) {
           .contact-illustration {
             width: 150px !important;
-            opacity: 0.7 !important;
           }
           
           .contact-content-box {
