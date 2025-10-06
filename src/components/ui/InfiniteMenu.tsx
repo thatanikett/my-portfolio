@@ -2,6 +2,8 @@
 import { FC, useRef, useState, useEffect, MutableRefObject } from 'react';
 import { mat4, quat, vec2, vec3 } from 'gl-matrix';
 
+// ... [Keep all the shader sources and class definitions the same - Face, Vertex, Geometry, IcosahedronGeometry, DiscGeometry, helper functions, ArcballControl, InfiniteGridMenu classes remain unchanged]
+
 const discVertShaderSource = `#version 300 es
 
 uniform mat4 uWorldMatrix;
@@ -221,103 +223,14 @@ class IcosahedronGeometry extends Geometry {
     super();
     const t = Math.sqrt(5) * 0.5 + 0.5;
     this.addVertex(
-      -1,
-      t,
-      0,
-      1,
-      t,
-      0,
-      -1,
-      -t,
-      0,
-      1,
-      -t,
-      0,
-      0,
-      -1,
-      t,
-      0,
-      1,
-      t,
-      0,
-      -1,
-      -t,
-      0,
-      1,
-      -t,
-      t,
-      0,
-      -1,
-      t,
-      0,
-      1,
-      -t,
-      0,
-      -1,
-      -t,
-      0,
-      1
+      -1, t, 0, 1, t, 0, -1, -t, 0, 1, -t, 0,
+      0, -1, t, 0, 1, t, 0, -1, -t, 0, 1, -t,
+      t, 0, -1, t, 0, 1, -t, 0, -1, -t, 0, 1
     ).addFace(
-      0,
-      11,
-      5,
-      0,
-      5,
-      1,
-      0,
-      1,
-      7,
-      0,
-      7,
-      10,
-      0,
-      10,
-      11,
-      1,
-      5,
-      9,
-      5,
-      11,
-      4,
-      11,
-      10,
-      2,
-      10,
-      7,
-      6,
-      7,
-      1,
-      8,
-      3,
-      9,
-      4,
-      3,
-      4,
-      2,
-      3,
-      2,
-      6,
-      3,
-      6,
-      8,
-      3,
-      8,
-      9,
-      4,
-      9,
-      5,
-      2,
-      4,
-      11,
-      6,
-      2,
-      10,
-      8,
-      6,
-      7,
-      9,
-      8,
-      1
+      0, 11, 5, 0, 5, 1, 0, 1, 7, 0, 7, 10, 0, 10, 11,
+      1, 5, 9, 5, 11, 4, 11, 10, 2, 10, 7, 6, 7, 1, 8,
+      3, 9, 4, 3, 4, 2, 3, 2, 6, 3, 6, 8, 3, 8, 9,
+      4, 9, 5, 2, 4, 11, 6, 2, 10, 8, 6, 7, 9, 8, 1
     );
   }
 }
@@ -757,7 +670,7 @@ class InfiniteGridMenu {
   private init(onInit?: InitCallback): void {
     const gl = this.canvas.getContext('webgl2', {
       antialias: true,
-      alpha: false
+      alpha: true
     });
     if (!gl) {
       throw new Error('No WebGL 2 context!');
@@ -1100,102 +1013,103 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
     }
   };
 
-  return (
-    <div className="relative w-full h-full">
-      <canvas
-        id="infinite-grid-menu-canvas"
-        ref={canvasRef}
-        className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing"
-      />
+return (
+  <div className="relative w-full h-full">
+    <canvas
+      id="infinite-grid-menu-canvas"
+      ref={canvasRef}
+      className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing"
+      style={{ background: 'transparent' }} 
+    />
 
-      {activeItem && (
-        <>
-          <h2
-            className={`
-          select-none
+    {activeItem && (
+      <div
+        className={`
           absolute
-          font-black
-          [font-size:4rem]
-          left-[1.6em]
-          top-1/2
-          transform
-          translate-x-[20%]
-          -translate-y-1/2
+          inset-0
+          flex
+          flex-wrap
+          items-center
+          justify-center
+          gap-4
+          md:gap-8
+          lg:gap-[280px]
+          px-4
+          md:px-6
+          lg:px-8
           transition-all
+          duration-500
           ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
-          ${
-            isMoving
-              ? 'opacity-0 pointer-events-none duration-[100ms]'
-              : 'opacity-100 pointer-events-auto duration-[500ms]'
-          }
+          pointer-events-none
+          ${isMoving ? 'opacity-0' : 'opacity-100'}
         `}
+      >
+        {/* Left: Title and Description */}
+        <div className="flex-1 min-w-[200px] max-w-[300px] lg:max-w-[350px] space-y-2 pointer-events-auto">
+          <h2 
+            className="select-none font-black leading-tight" 
+            style={{
+              fontSize: 'clamp(1.25rem, 4vw, 2.8rem)',
+              fontFamily: "var(--font-press-start), 'Courier New', monospace"
+            }}
           >
             {activeItem.title}
           </h2>
-          <p className={`
-            select-none
-            absolute
-            max-w-[25ch]
-            text-[1.10rem]
-            leading-relaxed
-            text-white
-            left-[1.6em]
-            top-1/2
-            transform
-            translate-x-[58%]
-            translate-y-[80%]                                                        
-            transition-all
-            ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
-            ${
-              isMoving
-                ? 'opacity-0 pointer-events-none duration-[100ms]'
-                : 'opacity-100 pointer-events-auto duration-[500ms]'
-            }
-          `}>
+          <p 
+            className="select-none leading-relaxed text-white" 
+            style={{
+              fontSize: 'clamp(0.75rem, 2.5vw, 1.125rem)',
+              fontWeight: 'bold',
+              marginTop: '0.75rem'
+            }}
+          >
             {activeItem.description}
           </p>
+        </div>
 
-          <div
-            className={`
-          select-none
-          absolute
-          max-w-[25ch]
-          text-justify
-          text-[1.4rem]
-          leading-relaxed
-          text-white
-          top-1/2
-          right-[-6%]
-          transition-all
-          ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
-          flex
-          items-center
-          gap-2
-          ${
-            isMoving
-              ? 'opacity-0 pointer-events-none duration-[100ms] translate-x-[-60%] -translate-y-1/2'
-              : 'opacity-100 pointer-events-auto duration-[500ms] translate-x-[-90%] -translate-y-1/2'
-          }
-        `}
-          >
-            <img src="/icons/briefcase.png" alt="Experience" className="w-7 h-7" />
-            <p>
+        {/* Center: WebGL Canvas (Logo) - invisible spacer */}
+        <div className="hidden lg:block flex-shrink-0 w-[150px] xl:w-[200px]"></div>
+
+        {/* Right: Experience */}
+        <div className="flex-1 min-w-[200px] max-w-[300px] lg:max-w-[350px] pointer-events-auto">
+          <div className="flex items-start gap-2 md:gap-3">
+            <img 
+              src="/icons/briefcase.png" 
+              alt="Experience" 
+              className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 flex-shrink-0 mt-1" 
+            />
+            <p 
+              className="select-none leading-relaxed text-white" 
+              style={{
+                fontSize: 'clamp(0.75rem, 2.5vw, 1.25rem)',
+                fontStyle: 'italic'
+              }}
+            >
               {activeItem.experience}
             </p>
           </div>
+        </div>
+      </div>
+    )}
 
-          <div
-            onClick={handleButtonClick}
-            className={`
+    {/* Button at bottom center */}
+    {activeItem && (
+      <div
+        onClick={handleButtonClick}
+        className={`
           absolute
           left-1/2
+          -translate-x-1/2
           z-10
-          w-[60px]
-          h-[60px]
+          w-[50px]
+          h-[50px]
+          md:w-[60px]
+          md:h-[60px]
           grid
           place-items-center
           bg-[#00ffff]
-          border-[5px]
+          border-[4px]
+          md:border-[5px]
           border-black
           rounded-full
           cursor-pointer
@@ -1203,17 +1117,16 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
           ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
           ${
             isMoving
-              ? 'bottom-[-80px] opacity-0 pointer-events-none duration-[100ms] scale-0 -translate-x-1/2'
-              : 'bottom-[3.8em] opacity-100 pointer-events-auto duration-[500ms] scale-100 -translate-x-1/2'
+              ? 'bottom-[-80px] opacity-0 pointer-events-none duration-100 scale-0'
+              : 'bottom-[2.5em] md:bottom-[3.8em] opacity-100 pointer-events-auto duration-500 scale-100'
           }
         `}
-          >
-            <p className="select-none relative text-[#060010] top-[2px] text-[26px]">&#x2197;</p>
-          </div>
-        </>
-      )}
-    </div>
-  );
+      >
+        <p className="select-none relative text-[#060010] top-[2px] text-[20px] md:text-[26px]">&#x2197;</p>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default InfiniteMenu;
