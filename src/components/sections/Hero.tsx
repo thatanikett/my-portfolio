@@ -35,6 +35,36 @@ export function HeroSection() {
         textAlign: 'center',
         pointerEvents: 'none'
       }}>
+        {/* Avatar Image */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginBottom: 'clamp(1.5rem, 4vw, 3rem)'
+        }}>
+          <div style={{
+            width: 'clamp(120px, 20vw, 200px)',
+            height: 'clamp(120px, 20vw, 200px)',
+            // // borderRadius: '50%',
+            // overflow: 'hidden',
+            // border: '3px solid rgba(255, 255, 255, 0.8)',
+            // boxShadow: '0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(0, 0, 0, 0.5)',
+            // background: 'rgba(0, 0, 0, 0.3)',
+            imageRendering: 'pixelated'
+          }}>
+            <img
+              src="/images/hoodedwojak.png"
+              alt="Avatar"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+                imageRendering: 'auto'
+              }}
+            />
+          </div>
+        </div>
+
         {/* Simplified Name Rendering - No Loading Animations */}
         {isMobile ? (
           // Mobile: Two lines - No slide animations
@@ -65,8 +95,6 @@ export function HeroSection() {
               ease="power2.out"
               stagger={0.08}
               threshold={0.1}
-              // triggerOnce={false}
-              // triggerOnHover={true}
               loop={true}
               loopDelay={6}
               scrambleCharset="ANIKET"
@@ -96,8 +124,6 @@ export function HeroSection() {
               ease="power2.out"
               stagger={0.08}
               threshold={0.1}
-              // triggerOnce={false}
-              // triggerOnHover={true}
               loop={true}
               loopDelay={6.5}
               scrambleCharset="SINGH"
@@ -150,9 +176,8 @@ export function HeroSection() {
           letterSpacing: 'clamp(0.02em, 0.5vw, 0.05em)',
           padding: '0 0.5rem',
           lineHeight: '1.4',
-          // Removed all animations
         }}>
-          FULL-STACK DEV IN AI ERA
+          WEB-DEVELOPER AND OPEN-SOURCE ENTHUSIAST
         </p>
         
         {/* Static Buttons - No Animations */}
@@ -163,7 +188,6 @@ export function HeroSection() {
           flexWrap: 'wrap',
           pointerEvents: 'auto',
           padding: '0 0.5rem'
-          // Removed all animations
         }}>
           <a 
             href="#projects" 
@@ -200,7 +224,8 @@ export function HeroSection() {
             VIEW PROJECTS
           </a>
           <a 
-            href="#contact" 
+            href="https://github.com/thatanikett" 
+            target="_blank"
             className="mobile-button"
             style={{
               padding: 'clamp(0.8rem, 2vw, 1rem) clamp(1.2rem, 4vw, 2rem)',
@@ -231,7 +256,7 @@ export function HeroSection() {
               e.currentTarget.style.boxShadow = 'none'
             }}
           >
-            GET IN TOUCH
+            VIEW MY GITHUB
           </a>
         </div>
       </div>

@@ -18,6 +18,7 @@ export function ContactSection() {
       }}
     >
       <div
+        className="contact-content-box"
         style={{
           maxWidth: 820,
           width: "100%",
@@ -207,6 +208,32 @@ export function ContactSection() {
         </div>
       </div>
 
+      {/* Bottom-Right Illustration - Stays within Contact Section */}
+      <div
+        className="contact-illustration"
+        style={{
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          width: "clamp(200px, 25vw, 350px)",
+          height: "auto",
+          pointerEvents: "none",
+          zIndex: 10,
+          opacity: 0.9
+        }}
+      >
+        <img
+          src="/images/contacts.png"
+          alt="Professional illustration"
+          style={{
+            width: "100%",
+            height: "auto",
+            display: "block",
+            objectFit: "contain"
+          }}
+        />
+      </div>
+
       {/* Add pixelated button styles */}
       <style jsx>{`
         .pixel-button, .social-icon-button {
@@ -232,6 +259,40 @@ export function ContactSection() {
           .social-icon-button svg {
             width: 24px !important;
             height: 24px !important;
+          }
+        }
+
+        /* Adjust illustration size and add padding for mobile */
+        @media (max-width: 768px) {
+          .contact-illustration {
+            width: clamp(150px, 20vw, 200px) !important;
+          }
+          
+          .contact-content-box {
+            padding-bottom: 5rem !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .contact-illustration {
+            width: 180px !important;
+            bottom: 10px !important;
+            right: 10px !important;
+          }
+          
+          .contact-content-box {
+            padding-bottom: 6rem !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .contact-illustration {
+            width: 150px !important;
+            opacity: 0.7 !important;
+          }
+          
+          .contact-content-box {
+            padding-bottom: 7rem !important;
           }
         }
       `}</style>
@@ -273,7 +334,7 @@ function SocialIconButton({
         justifyContent: "center",
         width: "64px",
         height: "64px",
-        borderRadius: "0", // Square for pixel look
+        borderRadius: "0",
         color: brandColors[brand].normal,
         textDecoration: "none",
         border: "2px solid rgba(255,255,255,0.3)",

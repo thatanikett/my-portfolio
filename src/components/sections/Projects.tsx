@@ -73,82 +73,83 @@ export default function ExpandableCardproject() {
   return (
     <div className="py-20" id="projects">
       {/* Section Heading with Floating Emoji */}
-      <div className="flex flex-col items-center mb-16 text-center relative">
-        {/* Floating Thinking Emoji - Responsive Positioning */}
-        <div
-          style={{
-            // Desktop positioning (left of heading)
-            position: "absolute",
-            top: "5rem",
-            left: "-5rem",
-            width: "clamp(6rem, 10vw, 12rem)",
-            height: "clamp(6rem, 10vw, 12rem)",
-            animation: "float 4s ease-in-out infinite",
-            cursor: "pointer",
-            zIndex: 10,
-            filter: "drop-shadow(0 0 20px rgba(255, 193, 7, 0.8)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))",
-            transition: "filter 0.3s ease",
-          }}
-          className="floating-emoji-responsive"
-          onMouseEnter={(e) => {
-            const outerDiv = e.currentTarget;
-            const transformDiv = outerDiv.querySelector('.transform-div') as HTMLElement;
-            
-            outerDiv.style.filter = "drop-shadow(0 0 30px rgba(255, 193, 7, 1)) drop-shadow(0 0 15px rgba(0, 0, 0, 0.7))";
-            
-            if (transformDiv) {
-              transformDiv.style.transform = "scale(1.3) rotate(15deg)";
-            }
-          }}
-          onMouseLeave={(e) => {
-            const outerDiv = e.currentTarget;
-            const transformDiv = outerDiv.querySelector('.transform-div') as HTMLElement;
-            
-            outerDiv.style.filter = "drop-shadow(0 0 20px rgba(255, 193, 7, 0.8)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))";
-            
-            if (transformDiv) {
-              transformDiv.style.transform = "scale(1) rotate(0deg)";
-            }
-          }}
-        >
-          <div 
-            className="transform-div"
-            style={{
-              width: "100%",
-              height: "100%",
-              transition: "transform 0.3s ease",
-            }}
-          >
-            <Image
-              src="/images/think2.png"
-              alt="Thinking emoji"
-              fill
-              style={{ objectFit: "contain" }}
-            />
-          </div>
-        </div>
-
-        <h2 style={{
-            fontSize: "clamp(2.5rem, 5vw, 4rem)",
-            fontWeight: "700",
-            textAlign: "center",
-            background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            letterSpacing: "-0.02em",
-            fontFamily: "var(--font-press-start), 'Courier New', monospace",
-            position: "relative",
-            marginTop: "6rem",
-            marginBottom: "20px",
-          }}>
-          My Projects
-        </h2>
-        <p className="text-center text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto leading-relaxed" 
-           style={{marginBottom:"2rem"}}>
-          A showcase of my latest web development projects, featuring modern technologies and innovative solutions
-        </p>
+<div className="flex flex-col items-center mb-16 text-center relative">
+  {/* Flex Container for Emoji and Heading */}
+  <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8 mb-6">
+    {/* Floating Thinking Emoji */}
+    <div
+      style={{
+        width: "clamp(3.5rem, 8vw, 10rem)",
+        height: "clamp(3.5rem, 8vw, 10rem)",
+        animation: "float 4s ease-in-out infinite",
+        cursor: "pointer",
+        filter: "drop-shadow(0 0 20px rgba(255, 193, 7, 0.8)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))",
+        transition: "filter 0.3s ease",
+        flexShrink: 0,
+      }}
+      className="floating-emoji"
+      onMouseEnter={(e) => {
+        const outerDiv = e.currentTarget;
+        const transformDiv = outerDiv.querySelector('.transform-div') as HTMLElement;
+        
+        outerDiv.style.filter = "drop-shadow(0 0 30px rgba(255, 193, 7, 1)) drop-shadow(0 0 15px rgba(0, 0, 0, 0.7))";
+        
+        if (transformDiv) {
+          transformDiv.style.transform = "scale(1.3) rotate(15deg)";
+        }
+      }}
+      onMouseLeave={(e) => {
+        const outerDiv = e.currentTarget;
+        const transformDiv = outerDiv.querySelector('.transform-div') as HTMLElement;
+        
+        outerDiv.style.filter = "drop-shadow(0 0 20px rgba(255, 193, 7, 0.8)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))";
+        
+        if (transformDiv) {
+          transformDiv.style.transform = "scale(1) rotate(0deg)";
+        }
+      }}
+    >
+      <div 
+        className="transform-div"
+        style={{
+          width: "100%",
+          height: "100%",
+          transition: "transform 0.3s ease",
+        }}
+      >
+        <Image
+          src="/images/think2.png"
+          alt="Thinking emoji"
+          fill
+          style={{ objectFit: "contain" }}
+        />
       </div>
+    </div>
+
+    {/* Heading */}
+    <h2 style={{
+        fontSize: "clamp(2.5rem, 5vw, 4rem)",
+        fontWeight: "700",
+        textAlign: "center",
+        background: "linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%)",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        backgroundClip: "text",
+        letterSpacing: "-0.02em",
+        fontFamily: "var(--font-press-start), 'Courier New', monospace",
+        margin: 0,
+      }}>
+      My Projects
+    </h2>
+  </div>
+
+  {/* Description */}
+  <p className="text-center text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto leading-relaxed" 
+     style={{marginBottom:"2rem"}}>
+    A showcase of my latest web development projects, featuring modern technologies and innovative solutions
+  </p>
+</div>
+
 
       {/* Simplified Modal Animation */}
       <AnimatePresence>
@@ -172,16 +173,32 @@ export default function ExpandableCardproject() {
               className="fixed inset-0 grid place-items-center z-50"
             >
               {/* Close Button */}
+              {/* Close Button */}
               <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ delay: 0.1 }}
-                className="flex absolute top-4 right-4 lg:hidden items-center justify-center bg-white dark:bg-neutral-800 rounded-full h-8 w-8 shadow-lg z-10"
-                onClick={() => setActive(null)}
+                className="flex absolute top-4 right-4 lg:hidden items-center justify-center bg-white dark:bg-neutral-800 rounded-full h-8 w-8 shadow-lg z-[60]"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  e.nativeEvent.stopImmediatePropagation();
+                  
+                  // Small delay to prevent click-through on mobile
+                  setTimeout(() => {
+                    setActive(null);
+                  }, 50);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                style={{ touchAction: 'manipulation' }}
               >
                 <CloseIcon />
               </motion.button>
+
               
               {/* Modal Content - Removed layoutId for simpler animation */}
               <motion.div
@@ -382,13 +399,14 @@ export default function ExpandableCardproject() {
           }
         }
         
-        @media (max-width: 480px) {
-          .floating-emoji-responsive {
-            width: 3.5rem !important;
-            height: 3.5rem !important;
-            margin-bottom: 1.5rem !important;
-          }
-        }
+          @keyframes float {
+          0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
       `}</style>
     </div>
   );

@@ -3,7 +3,7 @@
 
 import Squares from '@/components/backgrounds/Squares'
 
-export default function SimpleLiquidBackground() {
+export default function squaresBackground() {
   return (
     <div 
       style={{ 
