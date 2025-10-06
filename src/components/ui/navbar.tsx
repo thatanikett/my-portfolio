@@ -124,110 +124,108 @@ useEffect(() => {
 
 
 
- const getNavbarStyles = (): React.CSSProperties => ({
+const getNavbarStyles = (): React.CSSProperties => ({
   position: 'fixed',
-  top: isMobile ? '12px' : '20px',
-  left: '50%',
-  transform: `translateX(-50%) scale(${isScrolled ? 0.98 : 1})`,
+  top: isMobile ? '8px' : '20px',  // ✅ Reduced top spacing
+  left: isMobile ? '8px' : '50%',  // ✅ Fixed left position
+  right: isMobile ? '8px' : 'auto',  // ✅ Fixed right position
+  transform: isMobile ? 'none' : `translateX(-50%) scale(${isScrolled ? 0.98 : 1})`,  // ✅ No transform on mobile
   zIndex: 9999,
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   opacity: isModalOpen ? 0 : 1,
   pointerEvents: isModalOpen ? 'none' : 'auto',
-  // ✅ FIX: Let navbar shrink to content size
-  maxWidth: isMobile ? 'fit-content' : 'auto',
-  width: isMobile ? 'auto' : 'auto',
 });
-
 
 const getContainerStyles = (): React.CSSProperties => ({
   background: 'rgba(17, 24, 39, 0.95)',
-  border: '2px solid rgba(255, 255, 255, 0.6)',
-  borderRadius: isMobile ? '24px' : '32px',
-  padding: isMobile ? '10px 16px' : '10px 16px',
+  border: isMobile ? '1.5px solid rgba(255, 255, 255, 0.6)' : '2px solid rgba(255, 255, 255, 0.6)',  // ✅ Thinner border
+  borderRadius: isMobile ? '16px' : '32px',  // ✅ Smaller radius
+  padding: isMobile ? '6px 8px' : '10px 16px',  // ✅ Much less padding
   boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
-  gap: isMobile ? '6px' : '8px',
-  minHeight: isMobile ? '52px' : '64px',
-  // ✅ FIX: Remove width constraint
-  width: 'auto',  // Changed from '100%'
+  justifyContent: 'space-between',  // ✅ Better spacing control
+  gap: isMobile ? '2px' : '8px',  // ✅ Minimal gap
+  minHeight: isMobile ? '44px' : '64px',  // ✅ Shorter height
+  width: '100%',  // ✅ Fill container
   overflow: 'visible',
   backdropFilter: 'blur(16px)',
   WebkitBackdropFilter: 'blur(16px)',
 });
 
 
-  const getNavLinkStyles = (itemName: string): React.CSSProperties => {
-    const isActive = activeItem === itemName;
-    const isHovered = hoveredItem === itemName;
-    
-    return {
-      position: 'relative',
-      padding: isMobile ? '8px 16px' : '12px 20px',
-      fontSize: isMobile ? 'clamp(0.6rem, 2.5vw, 0.75rem)' : 'clamp(0.7rem, 1.5vw, 0.85rem)',
-      fontWeight: 'normal',
-      fontFamily: "var(--font-press-start), 'Courier New', monospace",
-      letterSpacing: 'clamp(0.02em, 0.5vw, 0.05em)',
-      color: isActive || isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.8)',
-      background: isActive 
-        ? 'rgba(75, 85, 99, 0.8)' 
-        : (isHovered ? 'rgba(255, 255, 255, 0.15)' : 'transparent'),
-      borderRadius: isMobile ? '16px' : '20px',
-      border: (isActive || isHovered) ? '1px solid rgba(255, 255, 255, 0.4)' : '1px solid transparent',
-      transition: 'all 0.3s ease',
-      textDecoration: 'none',
-      display: 'inline-block',
-      cursor: 'pointer',
-      whiteSpace: 'nowrap',
-      textAlign: 'center',
-      flex: isMobile ? 'none' : 'auto',
-      textTransform: 'uppercase',
-      transform: isHovered ? 'translateY(-2px) scale(1.02)' : 'translateY(0px) scale(1)',
-      boxShadow: isActive 
-        ? '0 4px 16px rgba(75, 85, 99, 0.4)' 
-        : (isHovered ? '0 6px 20px rgba(255, 255, 255, 0.2)' : 'none'),
-    };
+const getNavLinkStyles = (itemName: string): React.CSSProperties => {
+  const isActive = activeItem === itemName;
+  const isHovered = hoveredItem === itemName;
+  
+  return {
+    position: 'relative',
+    padding: isMobile ? '6px 8px' : '12px 20px',  // ✅ Minimal padding
+    fontSize: isMobile ? 'clamp(0.6rem, 2.5vw, 0.75rem)' : 'clamp(0.7rem, 1.5vw, 0.85rem)',
+    fontWeight: 'normal',
+    fontFamily: "var(--font-press-start), 'Courier New', monospace",
+    letterSpacing: 'clamp(0.02em, 0.5vw, 0.05em)',
+    color: isActive || isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.8)',
+    background: isActive 
+      ? 'rgba(75, 85, 99, 0.8)' 
+      : (isHovered ? 'rgba(255, 255, 255, 0.15)' : 'transparent'),
+    borderRadius: isMobile ? '12px' : '20px',  // ✅ Smaller radius
+    border: (isActive || isHovered) ? '1px solid rgba(255, 255, 255, 0.4)' : '1px solid transparent',
+    transition: 'all 0.3s ease',
+    textDecoration: 'none',
+    display: 'flex',  // ✅ Better icon alignment
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    whiteSpace: 'nowrap',
+    textAlign: 'center',
+    flex: '0 0 auto',  // ✅ Don't grow or shrink
+    textTransform: 'uppercase',
+    transform: isHovered ? 'translateY(-2px) scale(1.02)' : 'translateY(0px) scale(1)',
+    boxShadow: isActive 
+      ? '0 4px 16px rgba(75, 85, 99, 0.4)' 
+      : (isHovered ? '0 6px 20px rgba(255, 255, 255, 0.2)' : 'none'),
   };
+};
 
-  const getContactButtonStyles = (): React.CSSProperties => {
-    const isHovered = hoveredItem === 'contact';
-    
-    return {
-      background: isHovered 
-        ? 'linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%)'
-        : 'linear-gradient(135deg, #4B5563 0%, #1F2937 100%)',
-      color: isHovered ? '#000000' : '#ffffff',
-      padding: isMobile ? '10px 16px' : '12px 24px',
-      fontSize: isMobile ? 'clamp(0.6rem, 2.5vw, 0.75rem)' : 'clamp(0.7rem, 1.5vw, 0.85rem)',
-      fontWeight: 'normal',
-      fontFamily: "var(--font-press-start), 'Courier New', monospace",
-      letterSpacing: 'clamp(0.02em, 0.5vw, 0.05em)',
-      borderRadius: isMobile ? '16px' : '20px',
-      border: '2px solid rgba(255, 255, 255, 0.8)',
-      textDecoration: 'none',
-      display: 'inline-block',
-      cursor: 'pointer',
-      transition: 'all 0.3s ease',
-      marginLeft: isMobile ? '8px' : '12px',
-      whiteSpace: 'nowrap',
-      flexShrink: 0,
-      textTransform: 'uppercase',
-      transform: isHovered ? 'translateY(-2px) scale(1.05)' : 'translateY(0px) scale(1)',
-      boxShadow: isHovered 
-        ? '0 8px 25px rgba(255, 255, 255, 0.3)' 
-        : '0 4px 12px rgba(75, 85, 99, 0.3)',
-    };
-  };
-
-  const getSeparatorStyles = (): React.CSSProperties => ({
-    width: '1px',
-    height: isMobile ? '24px' : '28px',
-    background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.6), transparent)',
-    margin: isMobile ? '0 8px' : '0 12px',
+const getContactButtonStyles = (): React.CSSProperties => {
+  const isHovered = hoveredItem === 'contact';
+  
+  return {
+    background: isHovered 
+      ? 'linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%)'
+      : 'linear-gradient(135deg, #4B5563 0%, #1F2937 100%)',
+    color: isHovered ? '#000000' : '#ffffff',
+    padding: isMobile ? '6px 10px' : '12px 24px',  // ✅ Much smaller
+    fontSize: isMobile ? '0.55rem' : 'clamp(0.7rem, 1.5vw, 0.85rem)',  // ✅ Smaller text
+    fontWeight: 'normal',
+    fontFamily: "var(--font-press-start), 'Courier New', monospace",
+    letterSpacing: '0.02em',  // ✅ Tighter spacing
+    borderRadius: isMobile ? '12px' : '20px',
+    border: isMobile ? '1.5px solid rgba(255, 255, 255, 0.8)' : '2px solid rgba(255, 255, 255, 0.8)',
+    textDecoration: 'none',
+    display: 'inline-block',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    marginLeft: isMobile ? '4px' : '12px',  // ✅ Less margin
+    whiteSpace: 'nowrap',
     flexShrink: 0,
-    borderRadius: '0.5px',
-  });
+    textTransform: 'uppercase',
+    transform: isHovered ? 'translateY(-2px) scale(1.05)' : 'translateY(0px) scale(1)',
+    boxShadow: isHovered 
+      ? '0 8px 25px rgba(255, 255, 255, 0.3)' : '0 4px 12px rgba(75, 85, 99, 0.3)',
+  };
+};
+
+const getSeparatorStyles = (): React.CSSProperties => ({
+  width: '1px',
+  height: isMobile ? '20px' : '28px',  // ✅ Shorter
+  background: 'linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.6), transparent)',
+  margin: isMobile ? '0 4px' : '0 12px',  // ✅ Less margin
+  flexShrink: 0,
+  borderRadius: '0.5px',
+});
+
 
   return (
     <>
