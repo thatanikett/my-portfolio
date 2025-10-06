@@ -2,11 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Import usePathname hook
+import { usePathname } from 'next/navigation';
+import { Home, User, FolderKanban, Award, Mail } from 'lucide-react';
+
 
 interface NavItem {
   name: string;
   href: string;
+  icon: React.ComponentType<any>;
 }
 
 const FloatingNavbar: React.FC = () => {
@@ -14,118 +17,149 @@ const FloatingNavbar: React.FC = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [currentHash, setCurrentHash] = useState('');
   
-  // Get current pathname
-  const pathname = usePathname(); // This detects the current page
+  const pathname = usePathname();
 
-  const navItems: NavItem[] = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '/skills' }, // This goes to a different page
-  ];
+const navItems: NavItem[] = [
+  { name: 'Home', href: '/', icon: Home },
+  { name: 'About', href: '/#about', icon: User },
+  { name: 'Projects', href: '/#projects', icon: FolderKanban },
+  { name: 'Skills', href: '/skills', icon: Award },
+];
 
-  // Function to determine active item based on pathname
-  const getActiveItem = () => {
-    if (pathname === '/') {
-      // If on homepage, check for hash sections
-      if (typeof window !== 'undefined') {
-        const hash = window.location.hash;
-        if (hash === '#about') return 'About';
-        if (hash === '#projects') return 'Projects';
-      }
-      return 'Home'; // Default to Home when on homepage
-    } else if (pathname === '/skills') {
-      return 'Skills'; // When on skills page
-    } else if (pathname.startsWith('/')) {
-      // Handle other pages if needed
-      const pathParts = pathname.split('/');
-      const lastPart = pathParts[pathParts.length - 1];
-      const matchedItem = navItems.find(item => 
-        item.name.toLowerCase() === lastPart.toLowerCase()
-      );
-      return matchedItem ? matchedItem.name : 'Home';
+
+const getActiveItem = (): string | null => {
+  // Check /skills page first
+  if (pathname === '/skills') {
+    return 'Skills';  // ONLY Skills active
+  }
+  
+  // Check homepage with hash sections
+  if (pathname === '/') {
+    // No hash = Home active
+    if (!currentHash || currentHash === '') {
+      return 'Home';
     }
+    
+    // Specific hash checks
+    if (currentHash === '#about') {
+      return 'About';  // ONLY About active
+    }
+    
+    if (currentHash === '#projects') {
+      return 'Projects';  // ONLY Projects active
+    }
+    
+    // Default for other hashes
     return 'Home';
+  }
+  
+  return null;  // No active item for other pages
+};
+
+
+  const activeItem = getActiveItem();
+
+
+useEffect(() => {
+  // Set initial hash
+  const initialHash = typeof window !== 'undefined' ? window.location.hash : '';
+  setCurrentHash(initialHash);
+  
+  const handleScroll = () => {
+    setIsScrolled(window.scrollY > 50);
   };
 
-  const activeItem = getActiveItem(); // Get active item dynamically
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 768);
+  };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+  const handleHashChange = () => {
+    setCurrentHash(window.location.hash);
+  };
+  
+  // ✅ FIX: Override pushState and replaceState
+  // Next.js Link uses these internally, not hashchange event
+  const originalPushState = window.history.pushState;
+  const originalReplaceState = window.history.replaceState;
+  
+  window.history.pushState = function(...args) {
+    originalPushState.apply(window.history, args);
+    // Update hash after pushState
+    setTimeout(() => {
+      setCurrentHash(window.location.hash);
+    }, 0);
+  };
+  
+  window.history.replaceState = function(...args) {
+    originalReplaceState.apply(window.history, args);
+    // Update hash after replaceState
+    setTimeout(() => {
+      setCurrentHash(window.location.hash);
+    }, 0);
+  };
 
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+  const handleModalOpen = () => setIsModalOpen(true);
+  const handleModalClose = () => setIsModalOpen(false);
 
-    // Handle hash changes for section navigation on homepage
-    const handleHashChange = () => {
-      // Force re-render when hash changes
-      window.dispatchEvent(new Event('hashchange'));
-    };
-
-    const handleModalOpen = () => setIsModalOpen(true);
-    const handleModalClose = () => setIsModalOpen(false);
-
-    handleResize();
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('hashchange', handleHashChange);
-    window.addEventListener('modalOpen', handleModalOpen);
-    window.addEventListener('modalClose', handleModalClose);
+  handleResize();
+  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('resize', handleResize);
+  window.addEventListener('hashchange', handleHashChange);
+  window.addEventListener('modalOpen', handleModalOpen);
+  window.addEventListener('modalClose', handleModalClose);
+  
+  return () => {
+    window.history.pushState = originalPushState;
+    window.history.replaceState = originalReplaceState;
     
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('hashchange', handleHashChange);
-      window.removeEventListener('modalOpen', handleModalOpen);
-      window.removeEventListener('modalClose', handleModalClose);
-    };
-  }, []);
+    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('resize', handleResize);
+    window.removeEventListener('hashchange', handleHashChange);
+    window.removeEventListener('modalOpen', handleModalOpen);
+    window.removeEventListener('modalClose', handleModalClose);
+  };
+}, []);
 
-  const getNavbarStyles = (): React.CSSProperties => ({
-    position: 'fixed',
-    top: isMobile ? '12px' : '20px',
-    left: '50%',
-    transform: `translateX(-50%) scale(${isScrolled ? 0.98 : 1})`,
-    zIndex: 9999,
-    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    opacity: isModalOpen ? 0 : 1,
-    pointerEvents: isModalOpen ? 'none' : 'auto',
-    maxWidth: isMobile ? 'calc(100vw - 24px)' : 'auto',
-    width: isMobile ? '100%' : 'auto',
-  });
 
-  const getContainerStyles = (): React.CSSProperties => ({
-    background: 'rgba(17, 24, 39, 0.95)',
-    border: '2px solid rgba(255, 255, 255, 0.6)',
-    borderRadius: isMobile ? '24px' : '32px',
-    padding: isMobile ? '8px 12px' : '10px 16px',
-    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: isMobile ? 'flex-start' : 'center',
-    gap: isMobile ? '6px' : '8px',
-    minHeight: isMobile ? '52px' : '64px',
-    width: '100%',
-    overflow: isMobile ? 'auto' : 'visible',
-    backdropFilter: 'blur(16px)',
-    WebkitBackdropFilter: 'blur(16px)',
-    ...(isMobile && {
-      overflowX: 'auto',
-      overflowY: 'hidden',
-      whiteSpace: 'nowrap',
-      scrollBehavior: 'smooth',
-      WebkitOverflowScrolling: 'touch',
-      scrollbarWidth: 'none',
-      msOverflowStyle: 'none',
-    }),
-  });
+
+ const getNavbarStyles = (): React.CSSProperties => ({
+  position: 'fixed',
+  top: isMobile ? '12px' : '20px',
+  left: '50%',
+  transform: `translateX(-50%) scale(${isScrolled ? 0.98 : 1})`,
+  zIndex: 9999,
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  opacity: isModalOpen ? 0 : 1,
+  pointerEvents: isModalOpen ? 'none' : 'auto',
+  // ✅ FIX: Let navbar shrink to content size
+  maxWidth: isMobile ? 'fit-content' : 'auto',
+  width: isMobile ? 'auto' : 'auto',
+});
+
+
+const getContainerStyles = (): React.CSSProperties => ({
+  background: 'rgba(17, 24, 39, 0.95)',
+  border: '2px solid rgba(255, 255, 255, 0.6)',
+  borderRadius: isMobile ? '24px' : '32px',
+  padding: isMobile ? '10px 16px' : '10px 16px',
+  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: isMobile ? '6px' : '8px',
+  minHeight: isMobile ? '52px' : '64px',
+  // ✅ FIX: Remove width constraint
+  width: 'auto',  // Changed from '100%'
+  overflow: 'visible',
+  backdropFilter: 'blur(16px)',
+  WebkitBackdropFilter: 'blur(16px)',
+});
+
 
   const getNavLinkStyles = (itemName: string): React.CSSProperties => {
-    const isActive = activeItem === itemName; // Use dynamic active item
+    const isActive = activeItem === itemName;
     const isHovered = hoveredItem === itemName;
     
     return {
@@ -243,6 +277,16 @@ const FloatingNavbar: React.FC = () => {
             letter-spacing: 0.02em !important;
           }
         }
+
+        @media (max-width: 768px) {
+  .nav-text {
+    display: none; 
+  }
+}
+
+@media (min-width: 769px) {
+  .nav-icon {
+    display: none; 
       `}</style>
       
       <nav style={getNavbarStyles()}>
@@ -250,18 +294,29 @@ const FloatingNavbar: React.FC = () => {
           className="floating-navbar-container"
           style={getContainerStyles()}
         >
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="floating-navbar-link"
-              style={getNavLinkStyles(item.name)}
-              onMouseEnter={() => setHoveredItem(item.name)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navItems.map((item) => {
+  const IconComponent = item.icon;
+  return (
+    <Link
+      key={item.name}
+      href={item.href}
+      className="floating-navbar-link"
+      style={getNavLinkStyles(item.name)}
+      onMouseEnter={() => setHoveredItem(item.name)}
+      onMouseLeave={() => setHoveredItem(null)}
+    >
+      {/* Show icon on mobile */}
+      <span className="nav-icon">
+        <IconComponent size={18} strokeWidth={2.5} />
+      </span>
+      {/* Show text on desktop */}
+      <span className="nav-text">
+        {item.name}
+      </span>
+    </Link>
+  );
+})}
+
           
           <div style={getSeparatorStyles()}></div>
           
